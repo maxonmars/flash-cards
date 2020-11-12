@@ -1,9 +1,11 @@
 import React from 'react'
-import {Login} from "./Login";
+import { Login } from './Login'
 
 export const LoginContainer = () => {
-
-    return <div>LoginContainer
-        <Login/>
-    </div>
+   return (
+      <div>
+         LoginContainer
+         <Login />
+      </div>
+   )
 }
