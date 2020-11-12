@@ -10,7 +10,7 @@ type SuperEditableSpanType = DefaultInputPropsType & {
    onEnter?: () => void
    error?: string
    spanClassName?: string
-   affires?: string
+   affairs?: string
 
    spanProps?: DefaultSpanPropsType
 }
@@ -53,7 +53,7 @@ export const SuperEditableSpan: React.FC<SuperEditableSpanType> = ({
                <span onDoubleClick={onDoubleClickCallBack} className={spanClassName} {...restSpanProps}>
                   {children || restProps.value}
                </span>
-               <sup>{restProps.affires}</sup>
+               <sup>{restProps.affairs}</sup>
             </div>
          )}
       </div>

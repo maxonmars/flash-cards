@@ -34,8 +34,6 @@ export const SuperInputText: React.FC<SuperInputTextPropsType> = ({
 
       e.key === 'Enter' && onEnter && onEnter()
    }
-
-   const finalSpanClassName = `${s.error} ${spanClassName ? spanClassName : ''}`
    const finalInputClassName = error ? `${s.formFieldError}` : `${s.formField}`
 
    return (
@@ -49,8 +47,6 @@ export const SuperInputText: React.FC<SuperInputTextPropsType> = ({
             className={finalInputClassName}
             {...restProps}
          />
-         {/*<label className={s.formLabel} htmlFor="lineInput">{placeholder}</label>*/}
-         {/*{error && <span className={finalSpanClassName}>{error}</span>}*/}
       </div>
    )
 }

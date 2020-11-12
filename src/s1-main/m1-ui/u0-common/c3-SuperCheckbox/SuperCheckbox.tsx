@@ -28,14 +28,8 @@ export const SuperCheckbox: React.FC<SuperCheckboxPropsType> = ({
 
    return (
       <label className={finalInputClassName}>
-         <input
-            type={'checkbox'}
-            onChange={onChangeCallback}
-            // className={finalInputClassName}
-
-            {...restProps}
-         />
-         <span className={s.check}></span>
+         <input type={'checkbox'} onChange={onChangeCallback} {...restProps} />
+         <span className={s.check} />
          {children && <span className={s.spanClassName}>{children}</span>}
       </label>
    )
