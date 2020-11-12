@@ -14,6 +14,10 @@
     "@types/react-redux": "^7.1.11",
     "@types/react-router-dom": "^5.1.6",
     "axios": "^0.21.0",
+    "eslint-config-prettier": "^6.15.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.1",
+    "prettier": "^2.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
@@ -29,13 +33,40 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx} && eslint --fix src/**/*.{js,jsx,ts,tsx}",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "prettier"
+    ],
+    "rules": {
+      "default-case": "error",
+      "default-case-last": "error",
+      "no-multi-spaces": "error",
+      "jsx-quotes": [
+        "warn",
+        "prefer-single"
+      ],
+      "no-mixed-spaces-and-tabs": "error",
+      "no-debugger": "warn",
+      "no-alert": "warn",
+      "no-console": "warn",
+      "prefer-const": "error"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
     ]
   },
   "browserslist": {
