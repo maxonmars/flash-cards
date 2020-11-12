@@ -1,0 +1,103 @@
+.checkbox
+{
+    font-size: 18px;
+
+    position: relative;
+
+    display: block;
+
+    width: 93px;
+    margin-bottom: 20px;
+    padding-right: 36px;
+
+    cursor: pointer;
+
+    color: #bdc3c7;
+}
+
+.checkbox input
+{
+    position: absolute;
+
+    opacity: 0;
+}
+
+.checkbox .check
+{
+    position: absolute;
+    top: -2px;
+    right: 0;
+
+    width: 20px;
+    height: 20px;
+
+    transition: .7s;
+    text-align: center;
+
+    color: #2c3e50;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.checkbox .check:focus
+{
+    outline: none;
+}
+
+.checkbox .check:before
+{
+    position: absolute;
+    top: 3px;
+    left: 3px;
+
+    display: none;
+
+    width: 11px;
+    height: 6px;
+
+    content: '';
+    cursor: pointer;
+    transform: rotate(-45deg);
+
+    border-bottom: 3px solid #fff;
+    border-left: 3px solid #fff;
+}
+
+.checkbox:hover > .check
+{
+    box-shadow: -1px -1px 20px 1px rgba(45, 226, 230, .3), 1px 1px 20px 1px rgba(45, 226, 230, .3);
+}
+
+.checkbox input:focus ~ .check
+{
+    box-shadow: -1px -1px 20px 1px #ff3864, 1px 1px 20px 1px #ff3864;
+}
+
+.checkbox input:checked ~ .check
+{
+    background: #ff3864;
+}
+
+.checkbox input:checked ~ .check:before
+{
+    display: block;
+}
+
+.spanClassName
+{
+    font-size: 14px;
+    font-weight: 300;
+
+    transition: .7s;
+    vertical-align: center;
+
+    color: #fff;
+}
+
+.spanClassName:hover
+{
+    transition: .7s;
+
+    text-shadow: 0 0 20px rgb(45, 226, 230);
+}

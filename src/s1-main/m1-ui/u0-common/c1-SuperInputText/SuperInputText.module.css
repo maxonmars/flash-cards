@@ -1,0 +1,28 @@
+.formField
+{
+    font-family: inherit;
+    font-size: 1rem;
+
+    min-width: 300px;
+    margin-bottom: 20px;
+    padding: .8rem 0;
+
+    transition: .7s;
+    text-align: center;
+
+    color: #f4fff8;
+    border: 3px solid #ff3864;
+    border-radius: 5px;
+    outline: none;
+    background-color: transparent;
+}
+
+.formField:hover
+{
+    box-shadow: -1px -1px 20px 1px rgba(45,226,230,.3), 1px 1px 20px 1px rgba(45,226,230,.3);
+}
+
+.formField:focus
+{
+    box-shadow: -1px -1px 20px 1px #ff3864, 1px 1px 20px 1px #ff3864;
+}

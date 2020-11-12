@@ -44,7 +44,7 @@ export const SuperInputText: React.FC<SuperInputTextPropsType> = (
         <div className={s.formGroup}>
             <input
                 id="lineInput"
-                placeholder="Name"
+                placeholder={placeholder}
                 type={"text"}
                 onChange={onChangeCallback}
                 onKeyPress={onKeyPressCallback}
@@ -52,7 +52,7 @@ export const SuperInputText: React.FC<SuperInputTextPropsType> = (
 
                 {...restProps}
             />
-            <label className={s.formLabel} htmlFor="lineInput">{placeholder}</label>
+            {/*<label className={s.formLabel} htmlFor="lineInput">{placeholder}</label>*/}
             {/*{error && <span className={finalSpanClassName}>{error}</span>}*/}
         </div>
     );
