@@ -7,7 +7,6 @@ export const Login = () => {
       <div>
          <SuperInputText />
          <SuperInputText />
-         <SuperInputText />
          <SuperButton />
       </div>
    )
