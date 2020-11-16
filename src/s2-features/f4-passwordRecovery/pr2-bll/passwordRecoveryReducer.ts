@@ -48,11 +48,11 @@ export const recoverThunks = {
    sendEmailTC: (email: string): AppThunk => (dispatch) => {
       passRecoveryAPI
          .recovery(email)
-         .then(() => {
-            dispatch(actions.sendEmailAC('Пароль успешно отправлен на вашу почту'))
+         .then((res) => {
+            dispatch(actions.sendEmailAC(res.data.info))
          })
-         .catch(() => {
-            dispatch(actions.sendEmailAC('Данной почты не существует :('))
+         .catch((rej) => {
+            dispatch(actions.sendEmailAC(rej.response.data.error))
          })
    },
 }
