@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom'
 import { LoginPage } from '../../../s2-features/f1-login/l1-ui/LoginPage'
 import { Page404 } from './Page404'
 import { RegistrationPage } from '../../../s2-features/f2-registration/r1-ui/RegistrationPage'
-import { ProfilePage } from '../../../s2-features/f3-profile/p1-ui/ProfilePage'
 import { PasswordRecoveryPage } from '../../../s2-features/f4-passwordRecovery/pr1-ui/PasswordRecoveryPage'
 import { NewPasswordEntryPage } from '../../../s2-features/f5-newPasswordEntry/npe1-ui/NewPasswordEntryPage'
 import { ComponentsTestRack } from '../u0-common/ComponentsTestRack'
+import { ProfilePage } from '../../../s2-features/f3-profile/p1-ui/ProfilePage'
 
 export const PATH = {
    LOGIN: '/login',

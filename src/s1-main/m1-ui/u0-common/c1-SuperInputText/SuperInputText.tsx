@@ -21,7 +21,6 @@ export const SuperInputText: React.FC<SuperInputTextPropsType> = ({
    className,
    spanClassName,
    placeholder,
-
    ...restProps
 }) => {
    const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
