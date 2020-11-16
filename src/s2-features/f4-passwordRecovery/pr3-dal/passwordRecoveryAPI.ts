@@ -1,7 +1,7 @@
 import { instance } from '../../../s1-main/m3-dal/instance'
 
 const messageView = (token: string) => {
-   return `<div style="background-color: lime; padding: 15px"><a href=http://localhost:3000/#/new-password-entry/${token}'>Ссылка на восстановление пароля</a></div>`
+   return `<div style="background-color: #00ff00; padding: 15px"><a href=http://localhost:3000/#/set-new-password/${token}'>Ссылка на восстановление пароля</a></div>`
 }
 
 export const passRecoveryAPI = {
