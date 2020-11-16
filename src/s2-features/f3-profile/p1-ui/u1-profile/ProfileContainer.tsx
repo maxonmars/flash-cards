@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
 import { Profile } from './Profile'
 import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
-import { actions } from '../../../f1-login/l2-bll/loginReducer'
+import { thunks } from '../../../f1-login/l2-bll/loginReducer'
 
 export const ProfileContainer = () => {
    const name = useSelector<AppStateType, string | null>((state) => state.login.name)
@@ -13,8 +13,12 @@ export const ProfileContainer = () => {
 
    const dispatch = useDispatch()
 
+   useEffect(() => {
+      dispatch(thunks.meTC())
+   }, [dispatch])
+
    const logout = () => {
-      dispatch(actions.isLoggedInAC(false))
+      dispatch(thunks.logoutTC())
    }
 
    if (!isLoggedIn) {
