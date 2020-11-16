@@ -45,14 +45,12 @@ export const actions = {
 }
 
 export const recoverThunks = {
-   sendEmailTC: (email: string): AppThunk => (dispatch) => {
-      passRecoveryAPI
-         .recovery(email)
-         .then((res) => {
-            dispatch(actions.sendEmailAC(res.data.info))
-         })
-         .catch((rej) => {
-            dispatch(actions.sendEmailAC(rej.response.data.error))
-         })
+   sendEmailTC: (email: string): AppThunk => async (dispatch) => {
+      try {
+         const res = await passRecoveryAPI.recovery(email)
+         dispatch(actions.sendEmailAC(res.data.info))
+      } catch (e) {
+         dispatch(actions.sendEmailAC(e.response.data.error))
+      }
    },
 }
