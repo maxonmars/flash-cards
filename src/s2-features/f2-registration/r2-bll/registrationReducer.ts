@@ -34,10 +34,8 @@ const actions = {
 export const thunks = {
    accountCreation: (email: string, password: string): AppThunk => async (dispatch) => {
       try {
-         const result = await registrationAPI.setRegister(email, password)
-         if (result.addedUser) {
-            dispatch(actions.isRegister(true))
-         }
+         await registrationAPI.setRegister(email, password)
+         dispatch(actions.isRegister(true))
       } catch (e) {
          dispatch(actions.setError(e.response.data.error))
       }
