@@ -13,7 +13,7 @@ export const PATH = {
    REGISTRATION: '/registration',
    PROFILE: '/profile',
    PASSWORD_RECOVERY: '/password-recovery',
-   NEW_PASSWORD_ENTRY: '/new-password-entry',
+   NEW_PASSWORD_ENTRY: '/set-new-password',
    COMPONENT_TEST_RACK: '/component-test-rack',
 }
 
@@ -24,7 +24,7 @@ export const Routes = () => {
          <Route path={PATH.REGISTRATION} exact render={() => <RegistrationPage />} />
          <Route path={PATH.PROFILE} exact render={() => <ProfilePage />} />
          <Route path={PATH.PASSWORD_RECOVERY} exact render={() => <PasswordRecoveryPage />} />
-         <Route path={PATH.NEW_PASSWORD_ENTRY} exact render={() => <NewPasswordEntryPage />} />
+         <Route path={PATH.NEW_PASSWORD_ENTRY} render={() => <NewPasswordEntryPage />} />
          <Route path={PATH.COMPONENT_TEST_RACK} exact render={() => <ComponentsTestRack />} />
 
          <Route path={'/*'} render={() => <Page404 />} />

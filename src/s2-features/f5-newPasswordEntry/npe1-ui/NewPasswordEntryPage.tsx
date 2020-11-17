@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 
 export const NewPasswordEntryPage = () => {
-   return <div>New Password Entry</div>
+   return (
+      <div>
+         <span>Восстановление пароля</span>
+      </div>
+   )
 }

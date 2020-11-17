@@ -1,5 +1,5 @@
 import React, { DetailedHTMLProps, HTMLAttributes, InputHTMLAttributes, useState } from 'react'
-import s from './SuperEditableSpan.module.css'
+import s from './SuperEditableSpan.module.scss'
 import { SuperInputText } from '../c1-SuperInputText/SuperInputText'
 
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
