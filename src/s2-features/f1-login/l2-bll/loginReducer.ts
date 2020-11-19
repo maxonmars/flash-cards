@@ -8,6 +8,12 @@ type InitialStateType = typeof initialState
 
 type ActionTypes = InferActionsType<typeof actions>
 
+enum LOGIN {
+   SET_USER = 'SET_USER',
+   IS_LOGGED_IN = 'IS_LOGGED_IN',
+   SET_ERROR = 'SET_ERROR',
+}
+
 const initialState = {
    name: '',
    email: '',
@@ -20,18 +26,18 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
    action,
 ): InitialStateType => {
    switch (action.type) {
-      case 'login/SET-USER':
+      case LOGIN.SET_USER:
          return {
             ...state,
             name: action.name,
             email: action.email,
          }
-      case 'login/IS-LOGGED-IN':
+      case LOGIN.IS_LOGGED_IN:
          return {
             ...state,
             isLoggedIn: action.isLoggedIn,
          }
-      case 'login/SET_ERROR':
+      case LOGIN.SET_ERROR:
          return {
             ...state,
             error: action.error,
@@ -42,9 +48,9 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
 }
 
 export const actions = {
-   setUserAC: (name: string, email: string) => ({ type: 'login/SET-USER' as const, email, name }),
-   isLoggedInAC: (isLoggedIn: boolean) => ({ type: 'login/IS-LOGGED-IN' as const, isLoggedIn }),
-   setErrorAC: (error: string) => ({ type: 'login/SET_ERROR' as const, error }),
+   setUserAC: (name: string, email: string) => ({ type: LOGIN.SET_USER as const, email, name }),
+   isLoggedInAC: (isLoggedIn: boolean) => ({ type: LOGIN.IS_LOGGED_IN as const, isLoggedIn }),
+   setErrorAC: (error: string) => ({ type: LOGIN.SET_ERROR as const, error }),
 }
 
 const errorHandler = (e: any, dispatch: Dispatch) => {

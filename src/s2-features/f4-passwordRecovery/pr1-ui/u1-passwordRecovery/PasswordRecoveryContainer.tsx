@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
 import { actions, recoverThunks } from '../../pr2-bll/passwordRecoveryReducer'
@@ -10,14 +10,19 @@ export const PasswordRecoveryContainer = () => {
 
    const dispatch = useDispatch()
 
+   const [pending, setPending] = useState(false)
+
    const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       dispatch(actions.recoverPassAC(e.currentTarget.value))
    }
-   const buttonClickHandler = () => {
-      dispatch(recoverThunks.sendEmailTC(inputText))
+   const buttonClickHandler = async () => {
+      setPending(true)
+      await dispatch(recoverThunks.sendEmailTC(inputText))
+      setPending(false)
    }
    return (
       <PasswordRecovery
+         pending={pending}
          inputText={inputText}
          result={recoveryResult}
          inputHandler={inputChangeHandler}

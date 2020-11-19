@@ -6,34 +6,44 @@ import { SuperCheckbox } from '../../../../s1-main/m1-ui/u0-common/c3-SuperCheck
 import { FormikValuesType } from './LoginContainer'
 import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
 import { NavLink } from 'react-router-dom'
+import { ReactComponent as Loader } from '../../../../s1-main/m1-ui/u0-common/c8-Assets/Spin.svg'
+import { Error } from '../../../../s1-main/m1-ui/u0-common/c7-Error/Error'
 
 type LoginPropsType = {
    formik: FormikProps<FormikValuesType>
    error: string
 }
 
-export const Login = ({ formik, error }: LoginPropsType) => {
+export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
    return (
       <>
-         <form onSubmit={formik.handleSubmit}>
-            <label htmlFor='email'>Email Address</label>
-            <SuperInputText id='email' type='email' {...formik.getFieldProps('email')} />
-            {formik.errors.email ? <div style={{ color: 'red' }}>{formik.errors.email}</div> : null}
-            <label htmlFor='password'>Password</label>
-            <SuperInputText id='password' type='password' {...formik.getFieldProps('password')} />
-            {formik.errors.password ? <div style={{ color: 'red' }}>{formik.errors.password}</div> : null}
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <label htmlFor='rememberMe'>Remember Me</label>
-            <SuperCheckbox id='rememberMe' {...formik.getFieldProps('rememberMe')} />
+         <form style={{ marginTop: '20px' }} onSubmit={formik.handleSubmit}>
+            {formik.isSubmitting ? (
+               <Loader />
+            ) : (
+               <>
+                  <label htmlFor='email'>Email Address</label>
+                  <SuperInputText id='email' type='email' {...formik.getFieldProps('email')} />
+                  {formik.errors.email && <Error textError={formik.errors.email} />}
+                  <label htmlFor='password'>Password</label>
+                  <SuperInputText id='password' type='password' {...formik.getFieldProps('password')} />
+                  {formik.errors.password && <Error textError={formik.errors.password} />}
+                  {error && <Error textError={error} />}
+                  <SuperCheckbox id='rememberMe' {...formik.getFieldProps('rememberMe')} children={'Remember Me'} />
+               </>
+            )}
             <SuperButton
                type='submit'
                disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
                children={'Login'}
             />
          </form>
-         <NavLink to={PATH.REGISTRATION}>Registration</NavLink>
-         <span>/</span>
-         <NavLink to={PATH.PASSWORD_RECOVERY}>Password recovery</NavLink>
+         <div>
+            <NavLink style={{ marginRight: '60px' }} to={PATH.REGISTRATION}>
+               Registration
+            </NavLink>
+            <NavLink to={PATH.PASSWORD_RECOVERY}>Password recovery</NavLink>
+         </div>
       </>
    )
 }

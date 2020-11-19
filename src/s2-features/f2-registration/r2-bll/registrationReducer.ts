@@ -7,6 +7,11 @@ export type InitialStateType = typeof initialState
 
 type ActionTypes = InferActionsType<typeof actions>
 
+enum REGISTRATION {
+   IS_REGISTER = 'IS_REGISTER',
+   SET_ERROR = 'SET_ERROR',
+}
+
 const initialState = {
    isSuccessRegister: false,
    error: '',
@@ -17,9 +22,9 @@ export const registrationReducer: Reducer<InitialStateType, ActionTypes> = (
    action,
 ): InitialStateType => {
    switch (action.type) {
-      case 'IS_REGISTER':
+      case REGISTRATION.IS_REGISTER:
          return { ...state, isSuccessRegister: action.isSuccessRegister }
-      case 'SET_ERROR':
+      case REGISTRATION.SET_ERROR:
          return { ...state, error: action.message }
       default:
          return state
@@ -27,8 +32,9 @@ export const registrationReducer: Reducer<InitialStateType, ActionTypes> = (
 }
 
 export const actions = {
-   toggleSuccessRegister: (isSuccessRegister: boolean) => ({ type: 'IS_REGISTER', isSuccessRegister } as const),
-   setError: (message: string) => ({ type: 'SET_ERROR', message } as const),
+   toggleSuccessRegister: (isSuccessRegister: boolean) =>
+      ({ type: REGISTRATION.IS_REGISTER, isSuccessRegister } as const),
+   setError: (message: string) => ({ type: REGISTRATION.SET_ERROR, message } as const),
 }
 
 export const thunks = {

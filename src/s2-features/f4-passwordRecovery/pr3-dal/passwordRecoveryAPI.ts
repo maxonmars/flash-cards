@@ -8,11 +8,12 @@ const messageMelivaro = (token: string) => {
 }
 
 export const passRecoveryAPI = {
-   recovery: (email: string) => {
-      return instance.post('/auth/forgot', {
+   recovery: async (email: string) => {
+      const response = await instance.post('/auth/forgot', {
          email,
          from: 'mymailtolaaa@gmail.com',
          message: messageMelivaro('$token$'),
       })
+      return response.data
    },
 }

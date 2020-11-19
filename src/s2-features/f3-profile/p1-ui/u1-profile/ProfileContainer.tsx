@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
@@ -14,17 +14,20 @@ export const ProfileContainer = () => {
 
    const dispatch = useDispatch()
 
+   const [pending, setPending] = useState(false)
+
    useEffect(() => {
       if (!name) dispatch(thunks.meTC())
    }, [dispatch, name])
 
-   const logout = () => {
-      dispatch(thunks.logoutTC())
+   const logout = async () => {
+      setPending(true)
+      await dispatch(thunks.logoutTC())
    }
 
    if (!isLoggedIn) {
       return <Redirect to={PATH.LOGIN} />
    }
 
-   return <Profile name={name} email={email} logout={logout} error={error} />
+   return <Profile name={name} email={email} logout={logout} error={error} pending={pending} />
 }

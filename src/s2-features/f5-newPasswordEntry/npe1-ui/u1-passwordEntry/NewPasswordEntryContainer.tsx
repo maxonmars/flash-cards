@@ -2,16 +2,17 @@ import React from 'react'
 import { NewPasswordEntry } from './NewPasswordEntry'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
-import { useParams } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import { actionsUpdate, updatePasswordTC } from '../../npe2-bll/updatePasswordReducer'
 import { useFormik } from 'formik'
+import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
 
 export type FormValues = {
    password: string
    confirmPassword: string
 }
 
-export type FormErrorValues = {
+type FormErrorValues = {
    password?: string
    confirmPassword?: string
 }
@@ -36,11 +37,11 @@ export const NewPasswordEntryContainer = () => {
          if (!confirmPassword) {
             errors.password = 'Password is required'
          }
-         if (password.length < 3) {
-            errors.password = 'Пароль не может быть меньше 3х символов'
+         if (password.length < 7) {
+            errors.password = 'Пароль не может быть меньше 7-ми символов'
          }
-         if (confirmPassword.length < 3) {
-            errors.confirmPassword = 'Пароль не может быть меньше 3х символов'
+         if (confirmPassword.length < 7) {
+            errors.confirmPassword = 'Пароль не может быть меньше 7-ми символов'
          }
          return errors
       },
@@ -55,5 +56,9 @@ export const NewPasswordEntryContainer = () => {
       },
    })
 
-   return <NewPasswordEntry resultData={result} isUpdate={isUpdate} formik={formik} />
+   if (isUpdate) {
+      return <Redirect to={PATH.LOGIN} />
+   }
+
+   return <NewPasswordEntry resultData={result} formik={formik} />
 }

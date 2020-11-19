@@ -6,7 +6,7 @@ import { actionsUpdate } from '../../f5-newPasswordEntry/npe2-bll/updatePassword
 
 export type InitialStateRecoveryType = typeof initialState
 
-enum CONS {
+enum PASSWORD_RECOVERY {
    CHANGE_PASS = 'CHANGE_PASS',
    SEND_EMAIL = 'SEND_EMAIL',
 }
@@ -23,9 +23,9 @@ export const passwordRecoveryReducer: Reducer<InitialStateRecoveryType, ActionTy
    action,
 ): InitialStateRecoveryType => {
    switch (action.type) {
-      case CONS.CHANGE_PASS:
+      case PASSWORD_RECOVERY.CHANGE_PASS:
          return { ...state, inputText: action.text }
-      case CONS.SEND_EMAIL:
+      case PASSWORD_RECOVERY.SEND_EMAIL:
          return { ...state, result: action.result, inputText: '' }
       default:
          return state
@@ -35,12 +35,12 @@ export const passwordRecoveryReducer: Reducer<InitialStateRecoveryType, ActionTy
 export const actions = {
    recoverPassAC: (text: string) =>
       ({
-         type: CONS.CHANGE_PASS,
+         type: PASSWORD_RECOVERY.CHANGE_PASS,
          text,
       } as const),
    sendEmailAC: (result: string) =>
       ({
-         type: CONS.SEND_EMAIL,
+         type: PASSWORD_RECOVERY.SEND_EMAIL,
          result,
       } as const),
 }
@@ -49,7 +49,7 @@ export const recoverThunks = {
    sendEmailTC: (email: string): AppThunk => async (dispatch) => {
       try {
          const res = await passRecoveryAPI.recovery(email)
-         dispatch(actions.sendEmailAC(res.data.info))
+         dispatch(actions.sendEmailAC(res.info))
          dispatch(actionsUpdate.passUpdatedAC(true))
       } catch (e) {
          dispatch(actions.sendEmailAC(e.response.data.error))

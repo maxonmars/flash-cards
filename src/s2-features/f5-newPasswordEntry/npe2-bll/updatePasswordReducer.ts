@@ -5,7 +5,7 @@ import { updatePassAPI } from '../npe3-dal/updatePassAPI'
 
 export type InitialStateRecoveryType = typeof initialState
 
-enum CONS {
+enum UPDATE_PASSWORD {
    UPDATE_RESULT = 'UPDATE_RESULT',
    SET_PASS = 'SET_PASS',
    UPDATED_PASS = 'UPDATED_PASS',
@@ -24,11 +24,11 @@ export const updatePasswordReducer: Reducer<InitialStateRecoveryType, ActionType
    action,
 ): InitialStateRecoveryType => {
    switch (action.type) {
-      case CONS.UPDATE_RESULT:
+      case UPDATE_PASSWORD.UPDATE_RESULT:
          return { ...state, result: action.result }
-      case CONS.SET_PASS:
+      case UPDATE_PASSWORD.SET_PASS:
          return { ...state, password: action.password }
-      case CONS.UPDATED_PASS:
+      case UPDATE_PASSWORD.UPDATED_PASS:
          return { ...state, passIsUpdated: action.status }
       default:
          return state
@@ -38,17 +38,17 @@ export const updatePasswordReducer: Reducer<InitialStateRecoveryType, ActionType
 export const actionsUpdate = {
    passUpdateResultAC: (result: string) =>
       ({
-         type: CONS.UPDATE_RESULT,
+         type: UPDATE_PASSWORD.UPDATE_RESULT,
          result,
       } as const),
    setPassAC: (password: string) =>
       ({
-         type: CONS.SET_PASS,
+         type: UPDATE_PASSWORD.SET_PASS,
          password,
       } as const),
    passUpdatedAC: (status: boolean) =>
       ({
-         type: CONS.UPDATED_PASS,
+         type: UPDATE_PASSWORD.UPDATED_PASS,
          status,
       } as const),
 }
@@ -57,10 +57,9 @@ export const updatePasswordTC = {
    updatePass: (password: string, resetPasswordToken: string): AppThunk => async (dispatch) => {
       try {
          const res = await updatePassAPI.updatePass(password, resetPasswordToken)
-         dispatch(actionsUpdate.passUpdateResultAC(res.data.info))
+         dispatch(actionsUpdate.passUpdateResultAC(res.info))
          dispatch(actionsUpdate.passUpdatedAC(true))
       } catch (e) {
-         console.error(e)
          dispatch(actionsUpdate.passUpdateResultAC(e.data.error))
       }
    },
