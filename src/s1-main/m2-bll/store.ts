@@ -4,6 +4,7 @@ import { loginReducer } from '../../s2-features/f1-login/l2-bll/loginReducer'
 import { profileReducer } from '../../s2-features/f3-profile/p2-bll/profileReducer'
 import { passwordRecoveryReducer } from '../../s2-features/f4-passwordRecovery/pr2-bll/passwordRecoveryReducer'
 import { registrationReducer } from '../../s2-features/f2-registration/r2-bll/registrationReducer'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 const reducers = combineReducers({
    login: loginReducer,
@@ -12,7 +13,7 @@ const reducers = combineReducers({
    passRecovery: passwordRecoveryReducer,
 })
 
-export const store = createStore(reducers, applyMiddleware(thunkMiddleware))
+export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)))
 
 export type AppStateType = ReturnType<typeof reducers>
 

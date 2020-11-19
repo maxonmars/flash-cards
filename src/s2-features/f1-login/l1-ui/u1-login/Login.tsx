@@ -30,6 +30,7 @@ export const Login = ({ formik, error }: LoginPropsType) => {
             </SuperButton>
          </form>
          <NavLink to={PATH.REGISTRATION}>Registration</NavLink>
+         <span>/</span>
          <NavLink to={PATH.PASSWORD_RECOVERY}>Password recovery</NavLink>
       </>
    )

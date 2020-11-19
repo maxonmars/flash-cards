@@ -1,34 +1,29 @@
 import { FormikProps } from 'formik'
 import React, { FC } from 'react'
-import { Redirect } from 'react-router-dom'
 import { SuperInputText } from '../../../../s1-main/m1-ui/u0-common/c1-SuperInputText/SuperInputText'
 import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
-
-type FormValues = {
-   email: string
-   password: string
-   confirmPassword: string
-}
+import { FormValues } from './RegistrationContainer'
 
 type PropsTypes = {
    formik: FormikProps<FormValues>
-   isRegistration: boolean
-   error: string
+   serverErrors: string
 }
 
-export const Registration: FC<PropsTypes> = ({ formik, isRegistration, error }) => {
-   if (isRegistration) {
-      return <Redirect to={'/login'} />
-   }
-
+export const Registration: FC<PropsTypes> = ({ formik, serverErrors }) => {
    return (
       <div>
          <form onSubmit={formik.handleSubmit}>
-            <SuperInputText {...formik.getFieldProps('email')} />
-            <SuperInputText {...formik.getFieldProps('password')} />
-            <SuperInputText {...formik.getFieldProps('confirmPassword')} />
-            <SuperButton children={'submit'} />
-            {error ? <div style={{ color: '#fff' }}>{error}</div> : ''}
+            <label htmlFor='email'>Email Address</label>
+            <SuperInputText id='email' {...formik.getFieldProps('email')} />
+            {formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
+            <label htmlFor='password'>Password</label>
+            <SuperInputText id='password' {...formik.getFieldProps('password')} />
+            {formik.errors.password && <div style={{ color: 'red' }}>{formik.errors.password}</div>}
+            <label htmlFor='confirmPassword'>Confirm Password</label>
+            <SuperInputText id='confirmPassword' {...formik.getFieldProps('confirmPassword')} />
+            {formik.errors.confirmPassword && <div style={{ color: 'red' }}>{formik.errors.confirmPassword}</div>}
+            <SuperButton children={'submit'} disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting} />
+            {serverErrors && <div style={{ color: '#fff' }}>{serverErrors}</div>}
          </form>
       </div>
    )

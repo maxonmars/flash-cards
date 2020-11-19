@@ -8,7 +8,7 @@ export type InitialStateType = typeof initialState
 type ActionTypes = InferActionsType<typeof actions>
 
 const initialState = {
-   isRegistration: false,
+   isSuccessRegister: false,
    error: '',
 }
 
@@ -18,7 +18,7 @@ export const registrationReducer: Reducer<InitialStateType, ActionTypes> = (
 ): InitialStateType => {
    switch (action.type) {
       case 'IS_REGISTER':
-         return { ...state, isRegistration: action.isRegistration }
+         return { ...state, isSuccessRegister: action.isSuccessRegister }
       case 'SET_ERROR':
          return { ...state, error: action.message }
       default:
@@ -26,8 +26,8 @@ export const registrationReducer: Reducer<InitialStateType, ActionTypes> = (
    }
 }
 
-const actions = {
-   isRegister: (isRegistration: boolean) => ({ type: 'IS_REGISTER', isRegistration } as const),
+export const actions = {
+   toggleSuccessRegister: (isSuccessRegister: boolean) => ({ type: 'IS_REGISTER', isSuccessRegister } as const),
    setError: (message: string) => ({ type: 'SET_ERROR', message } as const),
 }
 
@@ -35,7 +35,7 @@ export const thunks = {
    accountCreation: (email: string, password: string): AppThunk => async (dispatch) => {
       try {
          await registrationAPI.setRegister(email, password)
-         dispatch(actions.isRegister(true))
+         dispatch(actions.toggleSuccessRegister(true))
       } catch (e) {
          dispatch(actions.setError(e.response.data.error))
       }

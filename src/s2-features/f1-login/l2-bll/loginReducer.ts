@@ -5,20 +5,15 @@ import { FormikValuesType } from '../l1-ui/u1-login/LoginContainer'
 import { loginAPI } from '../l3-dal/loginAPI'
 import { AppStateType } from '../../../s1-main/m2-bll/store'
 
-type InitialStateType = {
-   name: string | null
-   email: string | null
-   isLoggedIn: boolean
-   error: string | null
-}
+type InitialStateType = typeof initialState
 
 type ActionTypes = InferActionsType<typeof actions>
 
-const initialState: InitialStateType = {
-   name: null,
-   email: null,
+const initialState = {
+   name: '',
+   email: '',
    isLoggedIn: false,
-   error: null,
+   error: '',
 }
 
 export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
@@ -43,7 +38,7 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
             error: action.error,
          }
       default:
-         return { ...state }
+         return state
    }
 }
 
@@ -58,10 +53,8 @@ export const thunks = {
       loginAPI
          .login(values)
          .then((res) => {
-            if (!res.data.error) {
-               dispatch(actions.setUserAC(res.data.name, res.data.email))
-               dispatch(actions.isLoggedInAC(true))
-            }
+            dispatch(actions.setUserAC(res.name, res.email))
+            dispatch(actions.isLoggedInAC(true))
          })
          .catch((e) => {
             const error = e.response ? e.response.data.error : e.message + ', more details in the console'
@@ -71,7 +64,7 @@ export const thunks = {
    logoutTC: (): AppThunk => (dispatch) => {
       loginAPI
          .logout()
-         .then((res) => {
+         .then(() => {
             dispatch(actions.isLoggedInAC(false))
          })
          .catch((e) => {

@@ -1,6 +1,5 @@
 import React from 'react'
 import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
-import { useDispatch } from 'react-redux'
 
 type PropsType = {
    name: string | null

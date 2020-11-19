@@ -1,6 +1,6 @@
 import React from 'react'
 import { Login } from './Login'
-import { useFormik } from 'formik'
+import { FormikErrors, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { thunks } from '../../l2-bll/loginReducer'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
@@ -11,12 +11,6 @@ export type FormikValuesType = {
    email: string
    password: string
    rememberMe: boolean
-}
-
-type FormikErrorType = {
-   email?: string
-   password?: string
-   rememberMe?: boolean
 }
 
 export const LoginContainer = () => {
@@ -31,7 +25,7 @@ export const LoginContainer = () => {
          rememberMe: false,
       },
       validate: (values) => {
-         const errors: FormikErrorType = {}
+         const errors: FormikErrors<FormikValuesType> = {}
          if (!values.email) {
             errors.email = 'Email is required'
          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
