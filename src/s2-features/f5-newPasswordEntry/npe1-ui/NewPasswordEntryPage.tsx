@@ -1,9 +1,8 @@
 import React from 'react'
+import { NewPasswordEntryContainer } from './u1-passwordEntry/NewPasswordEntryContainer'
 
-export const NewPasswordEntryPage = () => {
-   return (
-      <div>
-         <span>Восстановление пароля</span>
-      </div>
-   )
+const NewPasswordEntryPage = () => {
+   return <NewPasswordEntryContainer />
 }
+
+export default NewPasswordEntryPage

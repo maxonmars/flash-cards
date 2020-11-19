@@ -2,6 +2,7 @@ import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 import { passRecoveryAPI } from '../pr3-dal/passwordRecoveryAPI'
+import { actionsUpdate } from '../../f5-newPasswordEntry/npe2-bll/updatePasswordReducer'
 
 export type InitialStateRecoveryType = typeof initialState
 
@@ -49,6 +50,7 @@ export const recoverThunks = {
       try {
          const res = await passRecoveryAPI.recovery(email)
          dispatch(actions.sendEmailAC(res.data.info))
+         dispatch(actionsUpdate.passUpdatedAC(true))
       } catch (e) {
          dispatch(actions.sendEmailAC(e.response.data.error))
       }
