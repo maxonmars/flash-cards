@@ -54,9 +54,9 @@ export const actionsUpdate = {
 }
 
 export const updatePasswordTC = {
-   updatePass: (email: string, token: string): AppThunk => async (dispatch) => {
+   updatePass: (password: string, resetPasswordToken: string): AppThunk => async (dispatch) => {
       try {
-         const res = await updatePassAPI.updatePass(email, token)
+         const res = await updatePassAPI.updatePass(password, resetPasswordToken)
          dispatch(actionsUpdate.passUpdateResultAC(res.data.info))
          dispatch(actionsUpdate.passUpdatedAC(true))
       } catch (e) {
