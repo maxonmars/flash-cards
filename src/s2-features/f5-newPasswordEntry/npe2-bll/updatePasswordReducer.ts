@@ -60,7 +60,7 @@ export const updatePasswordTC = {
          dispatch(actionsUpdate.passUpdateResultAC(res.data.info))
          dispatch(actionsUpdate.passUpdatedAC(true))
       } catch (e) {
-         console.log(e)
+         console.error(e)
          dispatch(actionsUpdate.passUpdateResultAC(e.data.error))
       }
    },

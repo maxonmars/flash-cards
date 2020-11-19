@@ -1,4 +1,4 @@
-import { instance } from '../../../s1-main/m3-dal/instance'
+import { instance, ResType } from '../../../s1-main/m3-dal/instance'
 import { FormikValuesType } from '../l1-ui/u1-login/LoginContainer'
 
 export const loginAPI = {
@@ -13,18 +13,4 @@ export const loginAPI = {
       const response = await instance.post<ResType>('auth/me')
       return response.data
    },
-}
-
-export type ResType = {
-   _id: string
-   email: string
-   name: string
-   avatar?: string
-   publicCardPacksCount: number
-   created: Date
-   updated: Date
-   isAdmin: boolean
-   verified: boolean
-   rememberMe: boolean
-   error: string
 }
