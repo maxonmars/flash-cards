@@ -17,7 +17,7 @@ export const RegistrationContainer = () => {
          confirmPassword: '',
       },
       onSubmit: (values) => {
-         const { password, email } = values
+         const { email, password } = values
          dispatch(thunks.accountCreation(email, password))
       },
    })

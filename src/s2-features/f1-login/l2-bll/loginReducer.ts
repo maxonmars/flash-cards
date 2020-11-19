@@ -1,24 +1,18 @@
 import { InferActionsType } from '../../../s1-main/m2-bll/actions'
-import { Reducer } from 'redux'
+import { Dispatch, Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 import { FormikValuesType } from '../l1-ui/u1-login/LoginContainer'
 import { loginAPI } from '../l3-dal/loginAPI'
-import { AppStateType } from '../../../s1-main/m2-bll/store'
 
-type InitialStateType = {
-   name: string | null
-   email: string | null
-   isLoggedIn: boolean
-   error: string | null
-}
+type InitialStateType = typeof initialState
 
 type ActionTypes = InferActionsType<typeof actions>
 
-const initialState: InitialStateType = {
-   name: null,
-   email: null,
+const initialState = {
+   name: '',
+   email: '',
    isLoggedIn: false,
-   error: null,
+   error: '',
 }
 
 export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
@@ -43,7 +37,7 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
             error: action.error,
          }
       default:
-         return { ...state }
+         return state
    }
 }
 
@@ -53,40 +47,38 @@ export const actions = {
    setErrorAC: (error: string) => ({ type: 'login/SET_ERROR' as const, error }),
 }
 
+const errorHandler = (e: any, dispatch: Dispatch) => {
+   const error = e.response ? e.response.data.error : e.message + ', more details in the console'
+   dispatch(actions.setErrorAC(error))
+}
+
 export const thunks = {
-   loginTC: (values: FormikValuesType): AppThunk => (dispatch) => {
-      loginAPI
-         .login(values)
-         .then((res) => {
-            if (!res.data.error) {
-               dispatch(actions.setUserAC(res.data.name, res.data.email))
-               dispatch(actions.isLoggedInAC(true))
-            }
-         })
-         .catch((e) => {
-            const error = e.response ? e.response.data.error : e.message + ', more details in the console'
-            dispatch(actions.setErrorAC(error))
-         })
+   loginTC: (values: FormikValuesType): AppThunk => async (dispatch) => {
+      try {
+         const response = await loginAPI.login(values)
+         dispatch(actions.setUserAC(response.name, response.email))
+         dispatch(actions.isLoggedInAC(true))
+      } catch (e) {
+         errorHandler(e, dispatch)
+      }
    },
-   logoutTC: (): AppThunk => (dispatch) => {
-      loginAPI
-         .logout()
-         .then((res) => {
-            dispatch(actions.isLoggedInAC(false))
-         })
-         .catch((e) => {
-            const error = e.response ? e.response.data.error : e.message + ', more details in the console'
-            dispatch(actions.setErrorAC(error))
-         })
+   logoutTC: (): AppThunk => async (dispatch) => {
+      try {
+         await loginAPI.logout()
+         dispatch(actions.isLoggedInAC(false))
+         dispatch(actions.setUserAC('', ''))
+      } catch (e) {
+         errorHandler(e, dispatch)
+      }
    },
-   meTC: (): AppThunk => (dispatch, getState: () => AppStateType) => {
-      loginAPI.me().then((res) => {
-         const email = getState().login.email
-         if (res.data.email === email) {
-            dispatch(actions.isLoggedInAC(true))
-         } else {
-            dispatch(actions.isLoggedInAC(false))
-         }
-      })
+   meTC: (): AppThunk => async (dispatch) => {
+      try {
+         const response = await loginAPI.me()
+         dispatch(actions.isLoggedInAC(true))
+         dispatch(actions.setUserAC(response.name, response.email))
+      } catch (e) {
+         dispatch(actions.isLoggedInAC(false))
+         errorHandler(e, dispatch)
+      }
    },
 }

@@ -3,7 +3,7 @@ import { SuperInputText } from '../../../s1-main/m1-ui/u0-common/c1-SuperInputTe
 import { SuperButton } from '../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType } from '../../../s1-main/m2-bll/store'
-import { actions, recoverThunks } from '../../f4-passwordRecovery/pr2-bll/passwordRecoveryReducer'
+import { actions, recoverThunks } from '../pr2-bll/passwordRecoveryReducer'
 
 export const PasswordRecoveryPage = () => {
    const recovery = useSelector<AppStateType, string>((state) => state.passRecovery.result)

@@ -28,7 +28,7 @@ export const Registration: FC<PropsTypes> = ({ formik, isRegistration, error }) 
             <SuperInputText {...formik.getFieldProps('password')} />
             <SuperInputText {...formik.getFieldProps('confirmPassword')} />
             <SuperButton children={'submit'} />
-            {error ? <div style={{ color: '#fff' }}>{error}</div> : ''}
+            {error && <div style={{ color: '#fff' }}>{error}</div>}
          </form>
       </div>
    )

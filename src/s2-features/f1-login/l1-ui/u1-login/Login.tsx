@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom'
 
 type LoginPropsType = {
    formik: FormikProps<FormikValuesType>
-   error: string | null
+   error: string
 }
 
 export const Login = ({ formik, error }: LoginPropsType) => {
@@ -25,9 +25,11 @@ export const Login = ({ formik, error }: LoginPropsType) => {
             {error && <div style={{ color: 'red' }}>{error}</div>}
             <label htmlFor='rememberMe'>Remember Me</label>
             <SuperCheckbox id='rememberMe' {...formik.getFieldProps('rememberMe')} />
-            <SuperButton type='submit' disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}>
-               Login
-            </SuperButton>
+            <SuperButton
+               type='submit'
+               disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+               children={'Login'}
+            />
          </form>
          <NavLink to={PATH.REGISTRATION}>Registration</NavLink>
          <NavLink to={PATH.PASSWORD_RECOVERY}>Password recovery</NavLink>

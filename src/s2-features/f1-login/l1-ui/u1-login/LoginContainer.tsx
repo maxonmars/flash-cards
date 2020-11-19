@@ -21,7 +21,7 @@ type FormikErrorType = {
 
 export const LoginContainer = () => {
    const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.login.isLoggedIn)
-   const error = useSelector<AppStateType, string | null>((state) => state.login.error)
+   const error = useSelector<AppStateType, string>((state) => state.login.error)
    const dispatch = useDispatch()
 
    const formik = useFormik({
@@ -42,10 +42,8 @@ export const LoginContainer = () => {
          }
          return errors
       },
-      onSubmit: async (values: FormikValuesType, onSubmitProps) => {
-         onSubmitProps.setSubmitting(true)
+      onSubmit: async (values: FormikValuesType) => {
          await dispatch(thunks.loginTC(values))
-         onSubmitProps.setSubmitting(false)
       },
    })
 
