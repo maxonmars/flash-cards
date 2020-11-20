@@ -18,10 +18,12 @@ export const LoginContainer = () => {
    const error = useSelector<AppStateType, string>((state) => state.login.error)
    const dispatch = useDispatch()
    useEffect(() => {
-      return () => {
-         dispatch(actions.setErrorAC(''))
+      if (error) {
+         return () => {
+            dispatch(actions.setErrorAC(''))
+         }
       }
-   }, [dispatch])
+   }, [error, dispatch])
 
    const formik = useFormik({
       initialValues: {

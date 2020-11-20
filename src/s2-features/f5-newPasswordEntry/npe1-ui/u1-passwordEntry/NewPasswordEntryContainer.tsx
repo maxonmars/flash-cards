@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React from 'react'
 import { NewPasswordEntry } from './NewPasswordEntry'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
