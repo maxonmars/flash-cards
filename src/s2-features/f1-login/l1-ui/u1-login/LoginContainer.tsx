@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Login } from './Login'
 import { FormikErrors, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { thunks } from '../../l2-bll/loginReducer'
+import { actions, thunks } from '../../l2-bll/loginReducer'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
 import { Redirect } from 'react-router-dom'
 import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
@@ -17,6 +17,11 @@ export const LoginContainer = () => {
    const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.login.isLoggedIn)
    const error = useSelector<AppStateType, string>((state) => state.login.error)
    const dispatch = useDispatch()
+   useEffect(() => {
+      return () => {
+         dispatch(actions.setErrorAC(''))
+      }
+   }, [dispatch])
 
    const formik = useFormik({
       initialValues: {
