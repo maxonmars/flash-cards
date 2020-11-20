@@ -1,20 +1,15 @@
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { NewPasswordEntry } from './NewPasswordEntry'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
 import { Redirect, useParams } from 'react-router-dom'
 import { actionsUpdate, updatePasswordTC } from '../../npe2-bll/updatePasswordReducer'
-import { useFormik } from 'formik'
+import { FormikErrors, useFormik } from 'formik'
 import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
 
 export type FormValues = {
    password: string
    confirmPassword: string
-}
-
-type FormErrorValues = {
-   password?: string
-   confirmPassword?: string
 }
 
 export const NewPasswordEntryContainer = () => {
@@ -30,18 +25,18 @@ export const NewPasswordEntryContainer = () => {
       },
       validate: (values) => {
          const { password, confirmPassword } = values
-         const errors: FormErrorValues = {}
+         const errors: FormikErrors<FormValues> = {}
          if (!password) {
             errors.password = 'Password is required'
          }
          if (!confirmPassword) {
             errors.password = 'Password is required'
          }
-         if (password.length < 7) {
-            errors.password = 'Пароль не может быть меньше 7-ми символов'
+         if (password.length < 8) {
+            errors.password = 'Пароль не может быть меньше восьми символов'
          }
-         if (confirmPassword.length < 7) {
-            errors.confirmPassword = 'Пароль не может быть меньше 7-ми символов'
+         if (confirmPassword.length < 8) {
+            errors.confirmPassword = 'Пароль не может быть меньше восьми символов'
          }
          return errors
       },
