@@ -12,13 +12,15 @@ enum LOGIN {
    SET_USER = 'SET_USER',
    IS_LOGGED_IN = 'IS_LOGGED_IN',
    SET_ERROR = 'SET_ERROR',
+   SET_PENDING = 'SET_PENDING',
 }
 
 const initialState = {
    name: '',
    email: '',
-   isLoggedIn: false,
+   isLoggedIn: '',
    error: '',
+   pending: false,
 }
 
 export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
@@ -42,6 +44,11 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
             ...state,
             error: action.error,
          }
+      case LOGIN.SET_PENDING:
+         return {
+            ...state,
+            pending: action.pending,
+         }
       default:
          return state
    }
@@ -49,8 +56,9 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
 
 export const actions = {
    setUserAC: (name: string, email: string) => ({ type: LOGIN.SET_USER as const, email, name }),
-   isLoggedInAC: (isLoggedIn: boolean) => ({ type: LOGIN.IS_LOGGED_IN as const, isLoggedIn }),
+   isLoggedInAC: (isLoggedIn: string) => ({ type: LOGIN.IS_LOGGED_IN as const, isLoggedIn }),
    setErrorAC: (error: string) => ({ type: LOGIN.SET_ERROR as const, error }),
+   setPendingAC: (pending: boolean) => ({ type: LOGIN.SET_PENDING as const, pending }),
 }
 
 const errorHandler = (e: any, dispatch: Dispatch) => {
@@ -62,8 +70,8 @@ export const thunks = {
    loginTC: (values: FormikValuesType): AppThunk => async (dispatch) => {
       try {
          const response = await loginAPI.login(values)
+         dispatch(actions.isLoggedInAC('logged'))
          dispatch(actions.setUserAC(response.name, response.email))
-         dispatch(actions.isLoggedInAC(true))
       } catch (e) {
          errorHandler(e, dispatch)
       }
@@ -71,7 +79,7 @@ export const thunks = {
    logoutTC: (): AppThunk => async (dispatch) => {
       try {
          await loginAPI.logout()
-         dispatch(actions.isLoggedInAC(false))
+         dispatch(actions.isLoggedInAC('notLogged'))
          dispatch(actions.setUserAC('', ''))
       } catch (e) {
          errorHandler(e, dispatch)
@@ -79,11 +87,13 @@ export const thunks = {
    },
    meTC: (): AppThunk => async (dispatch) => {
       try {
+         dispatch(actions.setPendingAC(true))
          const response = await loginAPI.me()
-         dispatch(actions.isLoggedInAC(true))
+         dispatch(actions.isLoggedInAC('logged'))
          dispatch(actions.setUserAC(response.name, response.email))
+         dispatch(actions.setPendingAC(false))
       } catch (e) {
-         dispatch(actions.isLoggedInAC(false))
+         dispatch(actions.isLoggedInAC('notLogged'))
          errorHandler(e, dispatch)
       }
    },

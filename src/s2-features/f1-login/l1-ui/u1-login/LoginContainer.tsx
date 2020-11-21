@@ -14,7 +14,7 @@ export type FormikValuesType = {
 }
 
 export const LoginContainer = () => {
-   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.login.isLoggedIn)
+   const isLoggedIn = useSelector<AppStateType, string>((state) => state.login.isLoggedIn)
    const error = useSelector<AppStateType, string>((state) => state.login.error)
    const dispatch = useDispatch()
    useEffect(() => {
@@ -48,7 +48,7 @@ export const LoginContainer = () => {
       },
    })
 
-   if (isLoggedIn) {
+   if (isLoggedIn === 'logged') {
       return <Redirect to={PATH.PROFILE} />
    }
 
