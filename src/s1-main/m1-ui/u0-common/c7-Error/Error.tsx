@@ -6,9 +6,5 @@ type PropsType = {
 }
 
 export const Error = ({ textError }: PropsType) => {
-   return (
-      <div className={s.error} style={{ color: '#ff6c11', marginBottom: '20px' }}>
-         {textError}
-      </div>
-   )
+   return <div className={s.error}>{textError}</div>
 }
