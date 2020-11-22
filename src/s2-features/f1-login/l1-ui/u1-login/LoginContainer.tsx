@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useMemo } from 'react'
 import { Login } from './Login'
 import { FormikErrors, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,11 +26,7 @@ export const LoginContainer = () => {
    }, [error, dispatch])
 
    const formik = useFormik({
-      initialValues: {
-         email: '',
-         password: '',
-         rememberMe: false,
-      },
+      initialValues: { email: '', password: '', rememberMe: false },
       validate: (values) => {
          const errors: FormikErrors<FormikValuesType> = {}
          if (!values.email) {
