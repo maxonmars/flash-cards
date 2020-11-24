@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NewPasswordEntry } from './NewPasswordEntry'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
@@ -51,9 +51,14 @@ export const NewPasswordEntryContainer = () => {
       },
    })
 
+   const WrappedNewPasswordEntry = useMemo(() => <NewPasswordEntry resultData={result} formik={formik} />, [
+      formik.values,
+      result,
+   ])
+
    if (isUpdate) {
       return <Redirect to={PATH.LOGIN} />
    }
 
-   return <NewPasswordEntry resultData={result} formik={formik} />
+   return <>{WrappedNewPasswordEntry}</>
 }

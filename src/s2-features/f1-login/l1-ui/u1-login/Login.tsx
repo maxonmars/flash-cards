@@ -15,6 +15,7 @@ type LoginPropsType = {
 }
 
 export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
+   console.log('render')
    return (
       <>
          <form style={{ marginTop: '20px' }} onSubmit={formik.handleSubmit}>
@@ -47,3 +48,5 @@ export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
       </>
    )
 }
+
+// @ts-ignore
