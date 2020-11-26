@@ -6,6 +6,7 @@ import { passwordRecoveryReducer } from '../../s2-features/f4-passwordRecovery/p
 import { registrationReducer } from '../../s2-features/f2-registration/r2-bll/registrationReducer'
 import { updatePasswordReducer } from '../../s2-features/f5-newPasswordEntry/npe2-bll/updatePasswordReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { searchCardReducer } from '../../s2-features/f6-cards/c2-bll/searchCardReducer'
 
 const reducers = combineReducers({
    login: loginReducer,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
    registration: registrationReducer,
    passRecovery: passwordRecoveryReducer,
    updatePass: updatePasswordReducer,
+   searchCard: searchCardReducer,
 })
 
 export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)))
