@@ -1,6 +1,5 @@
 import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
-import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 
 export type InitialStateSearchCardType = typeof initialState
 
