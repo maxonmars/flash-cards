@@ -9,8 +9,8 @@ import { useParams } from 'react-router-dom'
 
 export const CardsContainer = () => {
    const cards = useSelector<AppStateType, Array<ApiCardsType>>((state) => state.cards)
-   const { modelCards } = useCards()
    const { id } = useParams<{ id: string }>()
+   const { modelCards } = useCards(id)
    const dispatch = useDispatch()
    useEffect(() => {
       dispatch(thunks.addCards(id))
