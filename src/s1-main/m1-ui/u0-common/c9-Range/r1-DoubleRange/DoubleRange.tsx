@@ -1,9 +1,6 @@
-import React, { CSSProperties, DetailedHTMLProps, InputHTMLAttributes, useState } from 'react'
-import { useEffect } from 'react'
+import React, { CSSProperties } from 'react'
+
 import { Range, getTrackBackground } from 'react-range'
-import { useDispatch, useSelector } from 'react-redux'
-import { actionsSearchCard } from '../../../../../s2-features/f6-cards/c2-bll/searchCardReducer'
-import { AppStateType } from '../../../../m2-bll/store'
 
 export const FlexStyle: CSSProperties = { display: 'flex' }
 export const FlexAlignCenter: CSSProperties = { ...FlexStyle, alignItems: 'center' }
@@ -13,27 +10,19 @@ type DoubleRangeType = {
    step: number
    startData: number
    endData: number
+   rangeData: Array<number>
+   rangeDataHandler: (value: Array<number>) => void
 }
 
-const DoubleRange: React.FC<DoubleRangeType> = ({ step, startData, endData, ...resProps }) => {
-   const rangeData = useSelector<AppStateType, Array<number>>((state) => state.searchCard.rangeValues)
-
-   const [rangeValue, setRangeValue] = useState(rangeData)
-   const dispatch = useDispatch()
-
-   const DoubleRangeHandler = (newValue: number[]) => {
-      setRangeValue(newValue)
-      dispatch(actionsSearchCard.setRangeValueAC(newValue))
-   }
-
+const DoubleRange: React.FC<DoubleRangeType> = ({ step, startData, endData, rangeData, rangeDataHandler }) => {
    return (
       <Range
-         values={rangeValue}
+         values={rangeData}
          step={step}
          min={startData}
          max={endData}
          onChange={(value) => {
-            DoubleRangeHandler(value)
+            rangeDataHandler(value)
          }}
          renderTrack={({ props, children }) => (
             <div
@@ -53,7 +42,7 @@ const DoubleRange: React.FC<DoubleRangeType> = ({ step, startData, endData, ...r
                      width: '100%',
                      borderRadius: '4px',
                      background: getTrackBackground({
-                        values: rangeValue,
+                        values: rangeData,
                         colors: ['#ccc', '#548BF4', '#ccc'],
                         min: startData,
                         max: endData,
@@ -64,7 +53,6 @@ const DoubleRange: React.FC<DoubleRangeType> = ({ step, startData, endData, ...r
                </div>
             </div>
          )}
-         {...resProps}
          renderThumb={({ index, props, isDragged }) => (
             <div
                {...props}
@@ -89,7 +77,7 @@ const DoubleRange: React.FC<DoubleRangeType> = ({ step, startData, endData, ...r
                      borderRadius: '4px',
                      backgroundColor: '#548BF4',
                   }}>
-                  {rangeValue[index].toFixed(0)}
+                  {rangeData[index].toFixed(0)}
                   {/*// 10.12345 => 10; (1) => 10.1; (2) > 10.12; ...*/}
                </div>
                <div style={{ height: '16px', width: '5px', backgroundColor: isDragged ? '#548BF4' : '#CCC' }} />

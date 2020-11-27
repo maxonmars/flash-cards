@@ -1,8 +1,10 @@
 import { instance } from '../../../s1-main/m3-dal/instance'
 // ?cardsPack_id=5eb6a2f72f849402d46c6ac7
+
+
 export const cardsAPI = {
    getCards: async (cardsPack_id: string) => {
-      const response = await instance.get<ResultCardsType>(`cards/card?cardsPack_id=${cardsPack_id}`)
+      const response = await instance.get<ResultCardsType>(`cards/card/?cardsPack_id=${cardsPack_id}`)
       return response.data
    },
 }
