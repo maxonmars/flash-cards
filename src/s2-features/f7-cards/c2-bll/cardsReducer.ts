@@ -1,4 +1,4 @@
-import { ApiCardsType, cardsAPI } from '../c3-dal/cardsAPI'
+import { ApiCardsType, cardsAPI, CreateCardType, UpdateCardType } from '../c3-dal/cardsAPI'
 import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
@@ -7,15 +7,7 @@ type InitialStateType = ApiCardsType[]
 
 type ActionTypes = InferActionsType<typeof actions>
 
-const initialState: InitialStateType = [
-   {
-      question: 'zagadka',
-      answer: 'otgadka',
-      grade: 3,
-      updated: '23.05.2007',
-      questionImg: 'some img',
-   },
-]
+const initialState: InitialStateType = []
 
 enum CARDS {
    SET_CARDS = 'SET_CARDS',
@@ -40,5 +32,23 @@ const actions = {
 export const thunks = {
    addCards: (id: string): AppThunk => (dispatch) => {
       cardsAPI.getCards(id).then((res) => dispatch(actions.setCards(res.cards)))
+   },
+   createCard: (data: CreateCardType, pack_id: string): AppThunk => async (dispatch) => {
+      try {
+         await cardsAPI.createCard(data)
+         dispatch(thunks.addCards(pack_id))
+      } catch (e) {}
+   },
+   deleteCard: (id: string, pack_id: string): AppThunk => async (dispatch) => {
+      try {
+         await cardsAPI.deleteCard(id)
+         dispatch(thunks.addCards(pack_id))
+      } catch (e) {}
+   },
+   updateCard: (data: UpdateCardType, pack_id: string): AppThunk => async (dispatch) => {
+      try {
+         await cardsAPI.updateCard(data)
+         dispatch(thunks.addCards(pack_id))
+      } catch (e) {}
    },
 }

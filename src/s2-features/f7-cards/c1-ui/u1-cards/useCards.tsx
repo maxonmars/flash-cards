@@ -1,8 +1,12 @@
 import React from 'react'
 import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
 import { ApiCardsType } from '../../c3-dal/cardsAPI'
+import { useDispatch } from 'react-redux'
+import { thunks } from '../../c2-bll/cardsReducer'
 
-export const useCards = () => {
+export const useCards = (id: string) => {
+   const dispatch = useDispatch()
+
    const modelCards = {
       renderTitle: () => {
          const headerNames = ['question', 'answer', 'Grade', 'updated', 'Covers']
@@ -13,22 +17,60 @@ export const useCards = () => {
                   <th key={index}>{header}</th>
                ))}
                <th>
-                  <SuperButton>ADD</SuperButton>
+                  <SuperButton
+                     onClick={() =>
+                        dispatch(
+                           thunks.createCard(
+                              {
+                                 answer: 'Some Answer',
+                                 question: 'Some question',
+                                 answerImg: '',
+                                 answerVideo: '',
+                                 cardsPack_id: id,
+                                 grade: 0,
+                                 rating: 0,
+                                 shots: 0,
+                                 type: '',
+                                 questionImg: '',
+                                 questionVideo: '',
+                              },
+                              id,
+                           ),
+                        )
+                     }>
+                     ADD
+                  </SuperButton>
                </th>
             </tr>
          )
       },
-      renderData: (table: ApiCardsType, index: number) => {
+      renderData: (card: ApiCardsType, index: number) => {
          return (
             <tr key={index}>
-               <td>{table.question}</td>
-               <td>{table.answer}</td>
-               <td>{table.grade}</td>
-               <td>{table.updated.slice(5, 16)}</td>
-               <td>{table.questionImg}</td>
+               <td>{card.question}</td>
+               <td>{card.answer}</td>
+               <td>{card.grade}</td>
+               <td>{card.updated.slice(5, 16)}</td>
+               <td>{card.questionImg}</td>
                <td>
-                  <SuperButton>del</SuperButton>
-                  <SuperButton>update</SuperButton>
+                  <SuperButton onClick={() => dispatch(thunks.deleteCard(card._id, card.cardsPack_id))}>
+                     del
+                  </SuperButton>
+                  <SuperButton
+                     onClick={() =>
+                        dispatch(
+                           thunks.updateCard(
+                              {
+                                 _id: card._id,
+                                 question: 'update question',
+                                 comments: 'new comment',
+                              },
+                              card.cardsPack_id,
+                           ),
+                        )
+                     }>
+                     update
+                  </SuperButton>
                </td>
             </tr>
          )

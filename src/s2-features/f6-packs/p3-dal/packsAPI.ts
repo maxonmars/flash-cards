@@ -5,10 +5,34 @@ export const packsAPI = {
       const response = await instance.get<ResPacksType>('cards/pack')
       return response.data
    },
+   createPack: async (data: CreatePackType) => {
+      await instance.post('cards/pack', { cardsPack: data })
+   },
+   deletePack: async (pack_id: string) => {
+      await instance.delete(`cards/pack?id=${pack_id}`)
+   },
+   updatePack: async (data: UpdatePackType) => {
+      await instance.put('cards/pack', { cardsPack: data })
+   },
 }
 
+export type UpdatePackType = {
+   _id: string
+   name?: string
+}
+
+export type CreatePackType = {
+   name: string
+   path: string
+   grade?: number
+   shots?: number
+   rating?: number
+   deckCover?: string
+   private: boolean
+   type: string
+}
 export type ApiPacksType = {
-   _id?: string
+   _id: string
    user_id?: string
    user_name?: string
    private?: boolean
