@@ -12,9 +12,11 @@ export const CardsContainer = () => {
    const { id } = useParams<{ id: string }>()
    const { modelCards } = useCards(id)
    const dispatch = useDispatch()
+
    useEffect(() => {
-      dispatch(thunks.addCards(id))
-   }, [dispatch, id])
+      const testPackId = '5eb6a2f72f849402d46c6ac4'
+      dispatch(thunks.addCards(testPackId))
+   }, [dispatch])
 
    return (
       <>

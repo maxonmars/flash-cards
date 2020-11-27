@@ -1,24 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchData from './SearchData'
 import { useFormik } from 'formik'
-import { useSelector } from 'react-redux'
-import { AppStateType } from '../../../../m2-bll/store'
-
+import { cardsActions } from '../../../../../s2-features/f7-cards/c2-bll/cardsReducer'
+import { useDispatch } from 'react-redux'
 export type SearchFormikValuesType = {
    searchData: string
 }
 
 const SearchDataContainer = () => {
-   const rangeData = useSelector<AppStateType, Array<number>>((state) => state.searchCard.rangeValues)
-
+   const [rangeData, setRangeData] = useState<Array<number>>([1, 5])
+   const dispatch = useDispatch()
    const formik = useFormik({
       initialValues: {
          searchData: '',
       },
-      onSubmit: (values) => {},
+      onSubmit: (values) => {
+         dispatch(cardsActions.findcard(values.searchData, rangeData))
+      },
    })
 
-   return <SearchData formik={formik} />
+   return <SearchData formik={formik} rangeData={rangeData} rangeDataHandler={setRangeData} />
 }
 
 export default SearchDataContainer
