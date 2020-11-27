@@ -1,8 +1,8 @@
 import { instance } from '../../../s1-main/m3-dal/instance'
 
 export const packsAPI = {
-   getPacks: async () => {
-      const response = await instance.get<ResPacksType>('cards/pack')
+   getPacks: async (name?: string) => {
+      const response = await instance.get<ResPacksType>(`cards/pack`)
       return response.data
    },
    createPack: async (data: CreatePackType) => {
