@@ -13,6 +13,8 @@ export const Header = () => {
          <NavLink to={PATH.NEW_PASSWORD_ENTRY}>New password entry_/</NavLink>
          <NavLink to={PATH.CARDS}>Cards_/</NavLink>
          <NavLink to={PATH.COMPONENT_TEST_RACK}>Component test rack_/</NavLink>
+         <NavLink to={PATH.PACKS}>Packs_/</NavLink>
+         <NavLink to={PATH.CARDS}>Cards_/</NavLink>
       </div>
    )
 }

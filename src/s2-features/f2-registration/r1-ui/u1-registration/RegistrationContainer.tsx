@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Registration } from './Registration'
 import { FormikErrors, useFormik } from 'formik'
 import { actions, thunks } from '../../r2-bll/registrationReducer'
@@ -56,13 +56,14 @@ export const RegistrationContainer = () => {
       },
    })
 
+   const WrappedRegistration = useMemo(() => <Registration serverErrors={serverErrors} formik={formik} />, [
+      formik.values,
+      serverErrors,
+   ])
+
    if (isSuccessRegister) {
       return <Redirect to={'/login'} />
    }
 
-   return (
-      <div>
-         <Registration serverErrors={serverErrors} formik={formik} />
-      </div>
-   )
+   return <>{WrappedRegistration}</>
 }

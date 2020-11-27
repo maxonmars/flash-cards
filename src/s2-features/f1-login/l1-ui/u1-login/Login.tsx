@@ -14,9 +14,8 @@ type LoginPropsType = {
    error: string
 }
 
-export const Login = React.memo(function ({ ...props }: LoginPropsType) {
-   const { formik, error } = props
-
+export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
+   console.log('render')
    return (
       <>
          <form style={{ marginTop: '20px' }} onSubmit={formik.handleSubmit}>
@@ -48,4 +47,6 @@ export const Login = React.memo(function ({ ...props }: LoginPropsType) {
          </div>
       </>
    )
-})
+}
+
+// @ts-ignore

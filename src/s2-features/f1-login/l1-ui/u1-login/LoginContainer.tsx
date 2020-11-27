@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Login } from './Login'
 import { FormikErrors, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,7 +26,11 @@ export const LoginContainer = () => {
    }, [error, dispatch])
 
    const formik = useFormik({
-      initialValues: { email: '', password: '', rememberMe: false },
+      initialValues: {
+         email: '',
+         password: '',
+         rememberMe: false,
+      },
       validate: (values) => {
          const errors: FormikErrors<FormikValuesType> = {}
          if (!values.email) {
@@ -44,9 +48,11 @@ export const LoginContainer = () => {
       },
    })
 
+   const WrappedLogin = useMemo(() => <Login formik={formik} error={error} />, [formik.values, error])
+
    if (isLoggedIn === 'logged') {
       return <Redirect to={PATH.PROFILE} />
    }
 
-   return <Login formik={formik} error={error} />
+   return <>{WrappedLogin}</>
 }

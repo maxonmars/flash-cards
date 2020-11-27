@@ -7,7 +7,8 @@ import { ComponentsTestRack } from '../u0-common/ComponentsTestRack'
 import { ProfilePage } from '../../../s2-features/f3-profile/p1-ui/ProfilePage'
 import PasswordRecoveryPage from '../../../s2-features/f4-passwordRecovery/pr1-ui/PasswordRecoveryPage'
 import NewPasswordEntryPage from '../../../s2-features/f5-newPasswordEntry/npe1-ui/NewPasswordEntryPage'
-import CardsPage from '../../../s2-features/f6-cards/c1-ui/CardsPage'
+import { PacksPage } from '../../../s2-features/f6-packs/p1-ui/PacksPage'
+import { CardsPage } from '../../../s2-features/f7-cards/c1-ui/CardsPage'
 
 export const PATH = {
    LOGIN: '/login',
@@ -16,7 +17,8 @@ export const PATH = {
    PASSWORD_RECOVERY: '/password-recovery',
    NEW_PASSWORD_ENTRY: '/set-new-password/:token',
    COMPONENT_TEST_RACK: '/component-test-rack',
-   CARDS: '/cards',
+   PACKS: '/packs',
+   CARDS: '/cards/:id',
 }
 
 export const Routes = () => {
@@ -27,8 +29,10 @@ export const Routes = () => {
          <Route path={PATH.PROFILE} exact render={() => <ProfilePage />} />
          <Route path={PATH.PASSWORD_RECOVERY} exact render={() => <PasswordRecoveryPage />} />
          <Route path={PATH.NEW_PASSWORD_ENTRY} render={() => <NewPasswordEntryPage />} />
-         <Route path={PATH.CARDS} exact render={() => <CardsPage />} />
          <Route path={PATH.COMPONENT_TEST_RACK} exact render={() => <ComponentsTestRack />} />
+         <Route path={PATH.PACKS} exact render={() => <PacksPage />} />
+         <Route path={PATH.CARDS} render={() => <CardsPage />} />
+
          <Route path={'/*'} render={() => <Page404 />} />
       </Switch>
    )
