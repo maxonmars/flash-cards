@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react'
-import { Login } from './Login'
+import React, { useEffect } from 'react'
+import { LoginWithMemo } from './Login'
 import { FormikErrors, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, thunks } from '../../l2-bll/loginReducer'
@@ -48,11 +48,13 @@ export const LoginContainer = () => {
       },
    })
 
-   const WrappedLogin = useMemo(() => <Login formik={formik} error={error} />, [formik.values, error])
-
    if (isLoggedIn === 'logged') {
       return <Redirect to={PATH.PROFILE} />
    }
 
-   return <>{WrappedLogin}</>
+   return (
+      <>
+         <LoginWithMemo formik={formik} error={error} />
+      </>
+   )
 }
