@@ -5,7 +5,6 @@ import SearchDataContainer from '../../../s1-main/m1-ui/u0-common/Atoms/SearchDa
 export const CardsPage = () => {
    return (
       <>
-         <SearchDataContainer />
          <CardsContainer />
       </>
    )

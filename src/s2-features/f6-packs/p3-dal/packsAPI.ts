@@ -1,8 +1,23 @@
 import { instance } from '../../../s1-main/m3-dal/instance'
 
 export const packsAPI = {
-   getPacks: async (name?: string) => {
-      const response = await instance.get<ResPacksType>(`cards/pack`)
+   getPacks: async (
+      searchName: string,
+      min?: number,
+      max?: number,
+      page?: number,
+      pageCount?: number,
+      sortProducts?: string,
+      userID?: string,
+   ) => {
+      const response = await instance.get<ResPacksType>(
+         `cards/pack?` +
+            (searchName.length > 0 ? `packName=${searchName}&` : '') +
+            (max ? `min=${min}&max=${max}&` : '') +
+            (page ? `page=${page}&pageCount=${pageCount}&` : '') +
+            (sortProducts ? `sortPacks=${sortProducts}&` : '') +
+            (userID ? `user_id=${userID}&` : ''),
+      )
       return response.data
    },
    createPack: async (data: CreatePackType) => {

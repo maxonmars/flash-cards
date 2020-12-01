@@ -1,8 +1,22 @@
 import { instance } from '../../../s1-main/m3-dal/instance'
 
 export const cardsAPI = {
-   getCards: async (cardsPack_id: string) => {
-      const response = await instance.get<ResultCardsType>(`cards/card/?cardsPack_id=${cardsPack_id}`)
+   getCards: async (
+      packUserId: string,
+      min?: number,
+      max?: number,
+      page?: number,
+      pageCount?: number,
+      cardQuestion?: string | null,
+      sortCards?: string,
+   ) => {
+      const response = await instance.get<ResultCardsType>(
+         `cards/card/?cardsPack_id=${packUserId}&` +
+            (cardQuestion && cardQuestion.length > 0 ? `cardQuestion=${cardQuestion}&` : '') +
+            (max ? `min=${min}&max=${max}&` : '') +
+            (page ? `page=${page}&pageCount=${pageCount}&` : '') +
+            (sortCards ? `sortCards=${sortCards}&` : ''),
+      )
       return response.data
    },
    createCard: async (data: CreateCardType) => {

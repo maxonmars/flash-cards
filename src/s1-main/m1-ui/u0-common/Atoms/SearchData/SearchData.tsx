@@ -10,14 +10,23 @@ type SearchDataType = {
    formik: FormikProps<SearchFormikValuesType>
    rangeData: Array<number>
    rangeDataHandler: (data: Array<number>) => void
+   startData: number
+   endData: number
+   step: number
 }
 
-const SearchData: React.FC<SearchDataType> = ({ formik, rangeData, rangeDataHandler }) => {
+const SearchData: React.FC<SearchDataType> = ({ formik, rangeData, rangeDataHandler, startData, endData, step }) => {
    return (
       <form onSubmit={formik.handleSubmit}>
          <div className={s['SearchData__container']}>
             <SuperInputText placeholder={'Search'} {...formik.getFieldProps('searchData')} />
-            <DoubleRange step={1} startData={0} endData={5} rangeData={rangeData} rangeDataHandler={rangeDataHandler} />
+            <DoubleRange
+               step={step}
+               startData={startData}
+               endData={endData}
+               rangeData={rangeData}
+               rangeDataHandler={rangeDataHandler}
+            />
             <SuperButton type='submit'>Search</SuperButton>
          </div>
       </form>

@@ -3,7 +3,8 @@ import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/
 import { NavLink } from 'react-router-dom'
 import { ApiPacksType } from '../../p3-dal/packsAPI'
 import { useDispatch } from 'react-redux'
-import { thunks } from '../../p2-bll/packsReducer'
+import { actions, thunks } from '../../p2-bll/packsReducer'
+import SortButton from '../../../../s1-main/m1-ui/u0-common/Atoms/SortButton/SortButton'
 
 export const usePacks = () => {
    const dispatch = useDispatch()
@@ -14,9 +15,19 @@ export const usePacks = () => {
 
          return (
             <tr>
-               {headerNames.map((header, index) => (
-                  <th key={index}>{header}</th>
-               ))}
+               {headerNames.map((header, index) => {
+                  if (header === 'Name') {
+                     return (
+                        <th key={index}>
+                           <div>
+                              {header}
+                              <SortButton fetchProducts={thunks.fetchPacks} setSortProducts={actions.sortPacks} />
+                           </div>
+                        </th>
+                     )
+                  }
+                  return <th key={index}>{header}</th>
+               })}
                <th>
                   <SuperButton onClick={() => dispatch(thunks.createPack())}>ADD</SuperButton>
                </th>
