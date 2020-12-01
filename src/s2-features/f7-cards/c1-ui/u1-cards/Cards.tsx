@@ -10,6 +10,7 @@ type PropsType = {
    }
 }
 
+// some empty comment
 export const Cards: React.FC<PropsType> = ({ cards, modelCards }) => {
    return (
       <>
