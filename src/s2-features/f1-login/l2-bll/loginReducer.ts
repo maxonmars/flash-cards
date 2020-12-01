@@ -94,6 +94,7 @@ export const thunks = {
          dispatch(actions.setPendingAC(false))
       } catch (e) {
          dispatch(actions.isLoggedInAC('notLogged'))
+         dispatch(actions.setPendingAC(false))
          errorHandler(e, dispatch)
       }
    },

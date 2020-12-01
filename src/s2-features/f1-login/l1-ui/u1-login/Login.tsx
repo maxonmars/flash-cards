@@ -14,7 +14,7 @@ type LoginPropsType = {
    error: string
 }
 
-export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
+const Login: React.FC<LoginPropsType> = React.memo(({ formik, error }) => {
    console.log('render')
    return (
       <>
@@ -33,11 +33,7 @@ export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
                   <SuperCheckbox id='rememberMe' {...formik.getFieldProps('rememberMe')} children={'Remember Me'} />
                </>
             )}
-            <SuperButton
-               type='submit'
-               disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
-               children={'Login'}
-            />
+            <SuperButton type='submit' disabled={!formik.isValid || formik.isSubmitting} children={'Login'} />
          </form>
          <div>
             <NavLink style={{ marginRight: '60px' }} to={PATH.REGISTRATION}>
@@ -47,6 +43,8 @@ export const Login: React.FC<LoginPropsType> = ({ formik, error }) => {
          </div>
       </>
    )
-}
+})
 
-// @ts-ignore
+export const LoginWithMemo = React.memo(Login, (props, nextProps) => {
+   return props.formik.values === nextProps.formik.values && props.formik.errors === nextProps.formik.errors
+})
