@@ -2,7 +2,6 @@ import { ApiCardsType, cardsAPI, CreateCardType, UpdateCardType } from '../c3-da
 import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
-import range from 'lodash/range'
 import { AppStateType } from '../../../s1-main/m2-bll/store'
 
 type ActionTypes = InferActionsType<typeof cardsActions>
