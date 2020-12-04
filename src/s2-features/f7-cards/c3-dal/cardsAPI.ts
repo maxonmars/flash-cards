@@ -40,7 +40,7 @@ export type ApiCardsType = {
    answer: string
    question: string
    cardsPack_id: string
-   grade?: number
+   grade: number
    rating?: number
    shots?: number
    type?: string
@@ -49,7 +49,7 @@ export type ApiCardsType = {
    updated: string
    __v?: number
    _id: string
-   questionImg: string
+   questionImg?: string
 }
 
 type ResultCardsType = {

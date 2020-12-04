@@ -37,6 +37,9 @@ export const usePacks = () => {
                      update
                   </SuperButton>
                   <NavLink to={`/cards/${pack._id}`}>cards</NavLink>
+                  <NavLink style={{ marginLeft: '20px' }} to={`/learn/${pack._id}`}>
+                     learn
+                  </NavLink>
                </td>
             </tr>
          )

@@ -9,6 +9,7 @@ import PasswordRecoveryPage from '../../../s2-features/f4-passwordRecovery/pr1-u
 import NewPasswordEntryPage from '../../../s2-features/f5-newPasswordEntry/npe1-ui/NewPasswordEntryPage'
 import { PacksPage } from '../../../s2-features/f6-packs/p1-ui/PacksPage'
 import { CardsPage } from '../../../s2-features/f7-cards/c1-ui/CardsPage'
+import { LearnPage } from '../../../s2-features/f8-learn/l1-ui/LearnPage'
 
 export const PATH = {
    LOGIN: '/login',
@@ -19,6 +20,7 @@ export const PATH = {
    COMPONENT_TEST_RACK: '/component-test-rack',
    PACKS: '/packs',
    CARDS: '/cards/:id',
+   LEARN: '/learn/:id',
 }
 
 export const Routes = () => {
@@ -32,6 +34,7 @@ export const Routes = () => {
          <Route path={PATH.COMPONENT_TEST_RACK} exact render={() => <ComponentsTestRack />} />
          <Route path={PATH.PACKS} exact render={() => <PacksPage />} />
          <Route path={PATH.CARDS} render={() => <CardsPage />} />
+         <Route path={PATH.LEARN} render={() => <LearnPage />} />
 
          <Route path={'/*'} render={() => <Page404 />} />
       </Switch>

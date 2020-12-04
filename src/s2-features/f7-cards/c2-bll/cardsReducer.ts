@@ -40,8 +40,11 @@ export const cardsActions = {
 }
 
 export const thunks = {
-   addCards: (id: string): AppThunk => (dispatch) => {
-      cardsAPI.getCards(id).then((res) => dispatch(cardsActions.setCards(res.cards)))
+   addCards: (id: string): AppThunk => async (dispatch) => {
+      try {
+         const response = await cardsAPI.getCards(id)
+         dispatch(cardsActions.setCards(response.cards))
+      } catch (e) {}
    },
    createCard: (data: CreateCardType, pack_id: string): AppThunk => async (dispatch) => {
       try {
