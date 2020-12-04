@@ -15,11 +15,11 @@ const initialState = {
 }
 
 enum CARD {
-   SET_CARD = 'SET_CARD',
-   SET_CARDS = 'SET_CARDS',
-   SET_ERROR = 'SET_ERROR',
-   SET_IS_PENDING = 'SET_IS_PENDING',
-   ERASE_CARDS = 'ERASE_CARDS',
+   SET_CARD = 'learn/SET_CARD',
+   SET_CARDS = 'learn/SET_CARDS',
+   SET_ERROR = 'learn/SET_ERROR',
+   SET_IS_PENDING = 'learn/SET_IS_PENDING',
+   ERASE_CARDS = 'learn/ERASE_CARDS',
 }
 
 export const learnReducer: Reducer<InitialStateType, ActionTypes> = (

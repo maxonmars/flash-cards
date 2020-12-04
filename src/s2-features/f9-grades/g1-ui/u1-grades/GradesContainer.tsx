@@ -1,14 +1,17 @@
 import React from 'react'
 import { Grades } from './Grades'
-import { gradesAPI } from '../../g3-dal/gradesAPI'
 import { useDispatch } from 'react-redux'
-import { thunks } from '../../../../s2-features/f7-cards/c2-bll/cardsReducer'
+import { thunks } from '../../../f7-cards/c2-bll/cardsReducer'
 
-export const GradesContainer = () => {
+export type PropsGradesPageType = {
+   card_id: string
+}
+
+export const GradesContainer: React.FC<PropsGradesPageType> = ({ card_id }) => {
    const dispatch = useDispatch()
 
    const handlerAddGrade = (grade: number) => {
-      dispatch(thunks.updateCardGrade({ grade, card_id: '5fc8f0ccfb71f8000484472e' }))
+      dispatch(thunks.updateCardGrade({ grade, card_id }))
    }
    return (
       <>

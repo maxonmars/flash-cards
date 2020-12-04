@@ -3,7 +3,7 @@ import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 import { AppStateType } from '../../../s1-main/m2-bll/store'
-import { gradesAPI, RequestGradeType, ResponseGradeType } from '../../../s3-devs/grades/g3-dal/gradesAPI'
+import { gradesAPI, RequestGradeType, ResponseGradeType } from '../../f9-grades/g3-dal/gradesAPI'
 
 type ActionTypes = InferActionsType<typeof cardsActions>
 
@@ -85,6 +85,7 @@ export const cardsReducer: Reducer<InitialStateType, ActionTypes> = (
       case CARDS.UPDATE_CARD_GRADE:
          return {
             ...state,
+            // settings: {...state.settings},
             cards: state.cards.map((card) => {
                if (card._id === action.data.updatedGrade.card_id) {
                   return { ...card, grade: action.data.updatedGrade.grade, shots: action.data.updatedGrade.shots }
