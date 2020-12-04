@@ -3,6 +3,7 @@ import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 import { AppStateType } from '../../../s1-main/m2-bll/store'
+import { gradesAPI, RequestGradeType, ResponseGradeType } from '../../../s3-devs/grades/g3-dal/gradesAPI'
 
 type ActionTypes = InferActionsType<typeof cardsActions>
 
@@ -41,6 +42,7 @@ enum CARDS {
    SEARCH_CARDS = 'SEARCH_PACKS',
    SET_MIN_MAX_CARDS = 'SET_MIN_MAX',
    SORT_CARDS = 'SORT_PRODUCT',
+   UPDATE_CARD_GRADE = 'UPDATE_CARD_GRADE',
    // GET_MY_CARDS = 'GET_MY_PACK',
 }
 
@@ -80,6 +82,17 @@ export const cardsReducer: Reducer<InitialStateType, ActionTypes> = (
                sortCards: action.sortedPack,
             },
          }
+      case CARDS.UPDATE_CARD_GRADE:
+         return {
+            ...state,
+            cards: state.cards.map((card) => {
+               if (card._id === action.data.updatedGrade.card_id) {
+                  return { ...card, grade: action.data.updatedGrade.grade, shots: action.data.updatedGrade.shots }
+               } else {
+                  return card
+               }
+            }),
+         }
       default:
          return state
    }
@@ -95,6 +108,7 @@ export const cardsActions = {
       } as const),
    setMinMaxCards: (min: number, max: number) => ({ type: CARDS.SET_MIN_MAX_CARDS, min, max } as const),
    sortCards: (sortedPack: string) => ({ type: CARDS.SORT_CARDS, sortedPack } as const),
+   updateCardGrade: (data: ResponseGradeType) => ({ type: CARDS.UPDATE_CARD_GRADE, data } as const),
 }
 
 type CardsStoreType = () => AppStateType
@@ -145,6 +159,20 @@ export const thunks = {
       try {
          await cardsAPI.updateCard(data)
          dispatch(thunks.fetchCards(packUId))
+      } catch (e) {}
+   },
+   updateCardGrade: (data: RequestGradeType): AppThunk => async (dispatch) => {
+      try {
+         const response = await gradesAPI.updateGrade(data)
+         dispatch(
+            cardsActions.updateCardGrade({
+               updatedGrade: {
+                  grade: response.data.updatedGrade.grade,
+                  card_id: response.data.updatedGrade.card_id,
+                  shots: response.data.updatedGrade.shots,
+               },
+            }),
+         )
       } catch (e) {}
    },
 }

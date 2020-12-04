@@ -9,7 +9,7 @@ export const useCards = (id: string) => {
 
    const modelCards = {
       renderTitle: () => {
-         const headerNames = ['question', 'answer', 'Grade', 'updated', 'Covers']
+         const headerNames = ['question', 'answer', 'Grade', 'Shots', 'updated', 'Covers']
 
          return (
             <tr>
@@ -50,6 +50,7 @@ export const useCards = (id: string) => {
                <td>{card.question}</td>
                <td>{card.answer}</td>
                <td>{card.grade}</td>
+               <td>{card.shots}</td>
                <td>{card.updated.slice(5, 16)}</td>
                <td>{card.questionImg}</td>
                <td>

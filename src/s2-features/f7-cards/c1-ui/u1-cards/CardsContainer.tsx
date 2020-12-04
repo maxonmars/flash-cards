@@ -8,6 +8,7 @@ import { Redirect, useParams } from 'react-router-dom'
 import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
 import Pagination from '../../../../s1-main/m1-ui/u0-common/Atoms/Pagination/Pagination'
 import SearchDataContainer from '../../../../s1-main/m1-ui/u0-common/Atoms/SearchData/SearchDataContainer'
+import { GradesPage } from '../../../../s3-devs/grades/g1-ui/GradesPage'
 
 export const CardsContainer = () => {
    const isLoggedIn = useSelector<AppStateType, string>((state) => state.login.isLoggedIn)
@@ -45,6 +46,7 @@ export const CardsContainer = () => {
             rangeValue={cardsActions.setMinMaxCards}
          />
          <Cards cards={cards} modelCards={modelCards} />
+         <GradesPage />
          <Pagination page={page} pageCount={pageCount} pageTotalCount={cardsTotalCount} getPage={getPage} />
       </>
    )

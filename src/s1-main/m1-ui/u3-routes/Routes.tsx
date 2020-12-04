@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { LoginPage } from '../../../s2-features/f1-login/l1-ui/LoginPage'
 import { Page404 } from './Page404'
 import { RegistrationPage } from '../../../s2-features/f2-registration/r1-ui/RegistrationPage'
@@ -11,7 +11,7 @@ import { PacksPage } from '../../../s2-features/f6-packs/p1-ui/PacksPage'
 import { CardsPage } from '../../../s2-features/f7-cards/c1-ui/CardsPage'
 
 export const PATH = {
-   LOGIN: '/login',
+   LOGIN: '/',
    REGISTRATION: '/registration',
    PROFILE: '/profile',
    PASSWORD_RECOVERY: '/password-recovery',
@@ -32,8 +32,9 @@ export const Routes = () => {
          <Route path={PATH.COMPONENT_TEST_RACK} exact render={() => <ComponentsTestRack />} />
          <Route path={PATH.PACKS} exact render={() => <PacksPage />} />
          <Route path={PATH.CARDS} render={() => <CardsPage />} />
+         <Route path={'/404'} render={() => <Page404 />} />
 
-         <Route path={'/*'} render={() => <Page404 />} />
+         <Redirect from={'*'} to={'/404'} />
       </Switch>
    )
 }
