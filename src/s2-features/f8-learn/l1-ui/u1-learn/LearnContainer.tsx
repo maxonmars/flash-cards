@@ -36,9 +36,14 @@ export const LearnContainer: React.FC = () => {
       try {
          const response = await cardsAPI.getCards(id)
          const card: ApiCardsType = getCard(response.cards)
-         dispatch(cardsActions.setCards(response.cards))
-         setCard(card)
-         setPending(false)
+         if (response.cards.length > 0) {
+            dispatch(cardsActions.setCards(response.cards))
+            setCard(card)
+            setPending(false)
+         } else {
+            setError('This pack has no cards. Please choose another one')
+            setPending(false)
+         }
       } catch (e) {
          const error = e.response ? e.response.data.error : e.message + ', more details in the console'
          setError(error)
@@ -47,9 +52,6 @@ export const LearnContainer: React.FC = () => {
 
    useEffect(() => {
       getData()
-      if (Object.keys(card).length === 0) {
-         setError('Pack are empty. Please select pack with cards')
-      }
       return () => setCard({} as ApiCardsType)
    }, [])
 
