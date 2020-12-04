@@ -41,7 +41,6 @@ enum CARDS {
    SEARCH_CARDS = 'SEARCH_PACKS',
    SET_MIN_MAX_CARDS = 'SET_MIN_MAX',
    SORT_CARDS = 'SORT_PRODUCT',
-   // GET_MY_CARDS = 'GET_MY_PACK',
 }
 
 export const cardsReducer: Reducer<InitialStateType, ActionTypes> = (

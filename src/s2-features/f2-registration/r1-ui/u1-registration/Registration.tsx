@@ -12,7 +12,6 @@ type PropsTypes = {
 }
 
 export const Registration: FC<PropsTypes> = ({ formik, serverErrors }) => {
-   console.log('render')
    return (
       <div>
          <form onSubmit={formik.handleSubmit}>

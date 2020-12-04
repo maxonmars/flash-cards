@@ -8,6 +8,7 @@ type InitialStateType = typeof initialState
 type ActionTypes = InferActionsType<typeof cardActions>
 
 const initialState = {
+   cards: [] as ApiCardsType[],
    card: {} as ApiCardsType,
    error: '',
    pending: true,
@@ -15,8 +16,10 @@ const initialState = {
 
 enum CARD {
    SET_CARD = 'SET_CARD',
+   SET_CARDS = 'SET_CARDS',
    SET_ERROR = 'SET_ERROR',
-   SET_PENDING = 'SET_PENDING',
+   SET_IS_PENDING = 'SET_IS_PENDING',
+   ERASE_CARDS = 'ERASE_CARDS',
 }
 
 export const learnReducer: Reducer<InitialStateType, ActionTypes> = (
@@ -46,6 +49,21 @@ export const learnReducer: Reducer<InitialStateType, ActionTypes> = (
             ...state,
             error: action.error,
          }
+      case CARD.SET_CARDS:
+         return {
+            ...state,
+            cards: action.cards,
+         }
+      case CARD.ERASE_CARDS:
+         return {
+            ...state,
+            cards: action.eraseArray,
+         }
+      case CARD.SET_IS_PENDING:
+         return {
+            ...state,
+            pending: action.pending,
+         }
       default:
          return state
    }
@@ -53,15 +71,18 @@ export const learnReducer: Reducer<InitialStateType, ActionTypes> = (
 
 export const cardActions = {
    setCard: (cards: ApiCardsType[]) => ({ type: CARD.SET_CARD as const, cards }),
+   setCards: (cards: ApiCardsType[]) => ({ type: CARD.SET_CARDS as const, cards }),
    setError: (error: string) => ({ type: CARD.SET_ERROR as const, error }),
-   setPending: (pending: boolean) => ({ type: CARD.SET_PENDING as const, pending }),
+   setPending: (pending: boolean) => ({ type: CARD.SET_IS_PENDING as const, pending }),
+   eraseCards: (eraseArray: ApiCardsType[]) => ({ type: CARD.ERASE_CARDS, eraseArray } as const),
 }
 
 export const thunks = {
-   fetchCards: (id: string): AppThunk => async (dispatch) => {
+   addCards: (id: string): AppThunk => async (dispatch) => {
       try {
          const response = await cardsAPI.getCards(id)
          if (response.cards.length > 0) {
+            dispatch(cardActions.setCards(response.cards))
             dispatch(cardActions.setCard(response.cards))
          } else {
             dispatch(cardActions.setError('This pack has no cards. Please choose another one'))

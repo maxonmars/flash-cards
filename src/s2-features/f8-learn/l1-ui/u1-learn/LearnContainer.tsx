@@ -18,7 +18,13 @@ export const LearnContainer: React.FC = () => {
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(thunks.fetchCards(id))
+      dispatch(thunks.addCards(id))
+
+      return () => {
+         dispatch(cardActions.eraseCards([] as ApiCardsType[]))
+         dispatch(cardActions.setError(''))
+         dispatch(cardActions.setPending(true))
+      }
    }, [dispatch, id])
 
    const nextQuestion = () => {
@@ -30,14 +36,11 @@ export const LearnContainer: React.FC = () => {
       return <Loader />
    }
 
-   return (
+   return error ? (
+      <Error textError={error} />
+   ) : (
       <>
-         error ? (
-         <Error textError={error} />) : (
-         <>
-            <Learn card={card} setChecked={setChecked} nextQuestion={nextQuestion} isChecked={isChecked} />
-         </>
-         )
+         <Learn card={card} setChecked={setChecked} nextQuestion={nextQuestion} isChecked={isChecked} />
       </>
    )
 }
