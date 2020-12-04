@@ -8,6 +8,7 @@ import { updatePasswordReducer } from '../../s2-features/f5-newPasswordEntry/npe
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { packsReducer } from '../../s2-features/f6-packs/p2-bll/packsReducer'
 import { cardsReducer } from '../../s2-features/f7-cards/c2-bll/cardsReducer'
+import { learnReducer } from '../../s2-features/f8-learn/l2-bll/learnReducer'
 
 const reducers = combineReducers({
    login: loginReducer,
@@ -17,6 +18,7 @@ const reducers = combineReducers({
    updatePass: updatePasswordReducer,
    packs: packsReducer,
    cards: cardsReducer,
+   learn: learnReducer,
 })
 
 export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)))

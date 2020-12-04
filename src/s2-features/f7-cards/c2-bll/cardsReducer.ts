@@ -2,17 +2,46 @@ import { ApiCardsType, cardsAPI, CreateCardType, UpdateCardType } from '../c3-da
 import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
-import range from 'lodash/range'
-
-type InitialStateType = ApiCardsType[]
+import { AppStateType } from '../../../s1-main/m2-bll/store'
 
 type ActionTypes = InferActionsType<typeof cardsActions>
 
-const initialState: InitialStateType = []
+type InitialCardsSettingsStateType = {
+   page: number
+   pageCount: number
+   cardsTotalCount: number
+   min: number
+   max: number
+   sortCards: string
+   cardQuestion: string
+   packUserId: string
+}
+
+export type InitialStateType = {
+   cards: ApiCardsType[]
+   settings: InitialCardsSettingsStateType
+}
+
+const initialState: InitialStateType = {
+   cards: [],
+   settings: {
+      page: 1,
+      pageCount: 4,
+      cardsTotalCount: 40,
+      min: 1,
+      max: 5,
+      sortCards: '',
+      cardQuestion: '',
+      packUserId: '',
+   },
+}
 
 enum CARDS {
    SET_CARDS = 'SET_CARDS',
-   FIND_CARD = 'FIND_CARD',
+   SEARCH_CARDS = 'SEARCH_PACKS',
+   SET_MIN_MAX_CARDS = 'SET_MIN_MAX',
+   SORT_CARDS = 'SORT_PRODUCT',
+   // GET_MY_CARDS = 'GET_MY_PACK',
 }
 
 export const cardsReducer: Reducer<InitialStateType, ActionTypes> = (
@@ -21,47 +50,101 @@ export const cardsReducer: Reducer<InitialStateType, ActionTypes> = (
 ): InitialStateType => {
    switch (action.type) {
       case CARDS.SET_CARDS:
-         return [...state, ...action.cards]
-      case CARDS.FIND_CARD:
-         return state.filter((col) => {
-            const rangeData: Array<number | undefined> = range(action.range[0], action.range[1] - 1)
-            if (col.question.includes(action.name) && rangeData.includes(col.grade)) {
-               return { ...col }
-            }
-         })
+         return {
+            ...state,
+            cards: action.cards,
+            settings: action.settings,
+         }
+      case CARDS.SEARCH_CARDS:
+         return {
+            ...state,
+            settings: {
+               ...state.settings,
+               cardQuestion: action.cardQuestion,
+            },
+         }
+      case CARDS.SET_MIN_MAX_CARDS:
+         return {
+            ...state,
+            settings: {
+               ...state.settings,
+               min: action.min,
+               max: action.max,
+            },
+         }
+      case CARDS.SORT_CARDS:
+         return {
+            ...state,
+            settings: {
+               ...state.settings,
+               sortCards: action.sortedPack,
+            },
+         }
       default:
          return state
    }
 }
 
 export const cardsActions = {
-   setCards: (cards: InitialStateType) => ({ type: CARDS.SET_CARDS, cards } as const),
-   findcard: (name: string, range: Array<number>) => ({ type: CARDS.FIND_CARD, name, range } as const),
+   fetchCards: (cards: ApiCardsType[], settings: InitialCardsSettingsStateType) =>
+      ({ type: CARDS.SET_CARDS, cards, settings } as const),
+   searchCards: (cardQuestion: string) =>
+      ({
+         type: CARDS.SEARCH_CARDS,
+         cardQuestion,
+      } as const),
+   setMinMaxCards: (min: number, max: number) => ({ type: CARDS.SET_MIN_MAX_CARDS, min, max } as const),
+   sortCards: (sortedPack: string) => ({ type: CARDS.SORT_CARDS, sortedPack } as const),
 }
 
+type CardsStoreType = () => AppStateType
+
 export const thunks = {
-   addCards: (id: string): AppThunk => async (dispatch) => {
+   fetchCards: (packUId?: string, newPage?: number, newPageCount?: number): AppThunk => async (
+      dispatch,
+      getStore: CardsStoreType,
+   ) => {
+      const { pageCount, page, cardQuestion, sortCards, min, max, packUserId } = getStore().cards.settings
       try {
-         const response = await cardsAPI.getCards(id)
-         dispatch(cardsActions.setCards(response.cards))
+         const data = await cardsAPI.getCards(
+            packUId || packUserId,
+            min,
+            max,
+            newPage || page,
+            newPageCount || pageCount,
+            cardQuestion,
+            sortCards,
+         )
+         dispatch(
+            cardsActions.fetchCards(data.cards, {
+               page: data.page,
+               pageCount: data.pageCount,
+               cardQuestion,
+               sortCards,
+               min: data.minGrade,
+               max: data.minGrade,
+               packUserId,
+               cardsTotalCount: data.cardsTotalCount,
+            }),
+         )
       } catch (e) {}
    },
-   createCard: (data: CreateCardType, pack_id: string): AppThunk => async (dispatch) => {
+   createCard: (data: CreateCardType, packUId: string): AppThunk => async (dispatch) => {
       try {
          await cardsAPI.createCard(data)
-         dispatch(thunks.addCards(pack_id))
+         dispatch(thunks.fetchCards(packUId))
       } catch (e) {}
    },
-   deleteCard: (id: string, pack_id: string): AppThunk => async (dispatch) => {
+   deleteCard: (id: string, packUId: string): AppThunk => async (dispatch) => {
       try {
          await cardsAPI.deleteCard(id)
-         dispatch(thunks.addCards(pack_id))
+         dispatch(thunks.fetchCards(packUId))
       } catch (e) {}
    },
-   updateCard: (data: UpdateCardType, pack_id: string): AppThunk => async (dispatch) => {
+   updateCard: (data: UpdateCardType, packUId: string): AppThunk => async (dispatch) => {
       try {
          await cardsAPI.updateCard(data)
-         dispatch(thunks.addCards(pack_id))
+         dispatch(thunks.fetchCards(packUId))
       } catch (e) {}
    },
 }

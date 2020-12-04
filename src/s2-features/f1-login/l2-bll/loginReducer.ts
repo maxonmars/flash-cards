@@ -13,11 +13,13 @@ enum LOGIN {
    IS_LOGGED_IN = 'IS_LOGGED_IN',
    SET_ERROR = 'SET_ERROR',
    SET_PENDING = 'SET_PENDING',
+   SET_USER_ID = 'SET_USER_ID',
 }
 
 const initialState = {
    name: '',
    email: '',
+   userID: '',
    isLoggedIn: '',
    error: '',
    pending: false,
@@ -49,6 +51,11 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
             ...state,
             pending: action.pending,
          }
+      case LOGIN.SET_USER_ID:
+         return {
+            ...state,
+            userID: action.userID,
+         }
       default:
          return state
    }
@@ -59,6 +66,7 @@ export const actions = {
    isLoggedInAC: (isLoggedIn: string) => ({ type: LOGIN.IS_LOGGED_IN as const, isLoggedIn }),
    setErrorAC: (error: string) => ({ type: LOGIN.SET_ERROR as const, error }),
    setPendingAC: (pending: boolean) => ({ type: LOGIN.SET_PENDING as const, pending }),
+   setUserID: (userID: string) => ({ type: LOGIN.SET_USER_ID as const, userID }),
 }
 
 const errorHandler = (e: any, dispatch: Dispatch) => {
@@ -72,6 +80,7 @@ export const thunks = {
          const response = await loginAPI.login(values)
          dispatch(actions.isLoggedInAC('logged'))
          dispatch(actions.setUserAC(response.name, response.email))
+         dispatch(actions.setUserID(response._id))
       } catch (e) {
          errorHandler(e, dispatch)
       }
@@ -92,6 +101,7 @@ export const thunks = {
          dispatch(actions.isLoggedInAC('logged'))
          dispatch(actions.setUserAC(response.name, response.email))
          dispatch(actions.setPendingAC(false))
+         dispatch(actions.setUserID(response._id))
       } catch (e) {
          dispatch(actions.isLoggedInAC('notLogged'))
          dispatch(actions.setPendingAC(false))

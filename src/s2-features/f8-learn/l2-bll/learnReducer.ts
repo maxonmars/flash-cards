@@ -1,4 +1,3 @@
-import { cardsActions } from '../../f7-cards/c2-bll/cardsReducer'
 import { InferActionsType } from '../../../s1-main/m2-bll/actions'
 import { ApiCardsType, cardsAPI } from '../../f7-cards/c3-dal/cardsAPI'
 import { Reducer } from 'redux'
@@ -11,13 +10,19 @@ type ActionTypes = InferActionsType<typeof cardActions>
 const initialState = {
    card: {} as ApiCardsType,
    error: '',
+   pending: true,
 }
 
 enum CARD {
    SET_CARD = 'SET_CARD',
+   SET_ERROR = 'SET_ERROR',
+   SET_PENDING = 'SET_PENDING',
 }
 
-export const cardReducer: Reducer<InitialStateType, ActionTypes> = (state = initialState, action): InitialStateType => {
+export const learnReducer: Reducer<InitialStateType, ActionTypes> = (
+   state = initialState,
+   action,
+): InitialStateType => {
    switch (action.type) {
       case CARD.SET_CARD:
          const getCard = (cards: ApiCardsType[]) => {
@@ -36,6 +41,11 @@ export const cardReducer: Reducer<InitialStateType, ActionTypes> = (state = init
             ...state,
             card: getCard(action.cards),
          }
+      case CARD.SET_ERROR:
+         return {
+            ...state,
+            error: action.error,
+         }
       default:
          return state
    }
@@ -44,16 +54,23 @@ export const cardReducer: Reducer<InitialStateType, ActionTypes> = (state = init
 export const cardActions = {
    setCard: (cards: ApiCardsType[]) => ({ type: CARD.SET_CARD as const, cards }),
    setError: (error: string) => ({ type: CARD.SET_ERROR as const, error }),
+   setPending: (pending: boolean) => ({ type: CARD.SET_PENDING as const, pending }),
 }
 
 export const thunks = {
-   addCards: (id: string): AppThunk => async (dispatch) => {
+   fetchCards: (id: string): AppThunk => async (dispatch) => {
       try {
          const response = await cardsAPI.getCards(id)
          if (response.cards.length > 0) {
             dispatch(cardActions.setCard(response.cards))
-            dispatch(cardsActions.setCards(response.cards))
+         } else {
+            dispatch(cardActions.setError('This pack has no cards. Please choose another one'))
          }
-      } catch (e) {}
+      } catch (e) {
+         const error = e.response ? e.response.data.error : e.message + ', more details in the console'
+         dispatch(cardActions.setError(error))
+      } finally {
+         dispatch(cardActions.setPending(false))
+      }
    },
 }
