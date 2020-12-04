@@ -23,6 +23,11 @@ export type InitialPacksStateType = {
       showDeleteModal: boolean
       packID: string
    }
+   updateModal: {
+      showUpdateModal: boolean
+      packName: string
+      packID: string
+   }
 }
 
 const initialState: InitialPacksStateType = {
@@ -42,6 +47,11 @@ const initialState: InitialPacksStateType = {
       showDeleteModal: false,
       packID: '',
    },
+   updateModal: {
+      showUpdateModal: false,
+      packName: '',
+      packID: '',
+   },
 }
 
 type ActionTypes = InferActionsType<typeof actions>
@@ -54,6 +64,7 @@ enum PACKS {
    GET_MY_PACK = 'GET_MY_PACK',
    SHOW_ADD_MODAL = 'SHOW_ADD_MODAL',
    SHOW_DELETE_MODAL = 'SHOW_DELETE_MODAL',
+   SHOW_UPDATE_MODAL = 'UPDATE_MODAL',
 }
 
 export const packsReducer: Reducer<InitialPacksStateType, ActionTypes> = (
@@ -114,6 +125,19 @@ export const packsReducer: Reducer<InitialPacksStateType, ActionTypes> = (
                packID: action.packID,
             },
          }
+      //закалхозил
+      case PACKS.SHOW_UPDATE_MODAL:
+         return {
+            ...state,
+            updateModal: {
+               ...state.updateModal,
+               showUpdateModal: action.modal,
+            },
+            deleteModal: {
+               ...state.deleteModal,
+               packID: action.packID,
+            },
+         }
       default:
          return state
    }
@@ -155,6 +179,12 @@ export const actions = {
    showDeleteModal: (modal: boolean, packID: string) =>
       ({
          type: PACKS.SHOW_DELETE_MODAL,
+         modal,
+         packID,
+      } as const),
+   showUpdateModal: (modal: boolean, packID: string) =>
+      ({
+         type: PACKS.SHOW_UPDATE_MODAL,
          modal,
          packID,
       } as const),
@@ -215,6 +245,7 @@ export const thunks = {
    updatePack: (data: UpdatePackType): AppThunk => async (dispatch) => {
       try {
          await packsAPI.updatePack(data)
+         dispatch(actions.showUpdateModal(false, ''))
          dispatch(thunks.fetchPacks())
       } catch (e) {}
    },

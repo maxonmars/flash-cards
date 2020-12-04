@@ -12,6 +12,7 @@ export const usePacks = () => {
    const {
       showAddModal,
       deleteModal: { showDeleteModal },
+      updateModal: { showUpdateModal },
    } = useSelector<AppStateType, InitialPacksStateType>((state) => state.packs)
 
    const modelPacks = {
@@ -59,7 +60,9 @@ export const usePacks = () => {
                      del
                   </SuperButton>
                   <SuperButton
-                     onClick={() => dispatch(thunks.updatePack({ _id: pack._id, name: 'Updated galera pack' }))}>
+                     onClick={() => {
+                        dispatch(actions.showUpdateModal(!showUpdateModal, pack._id))
+                     }}>
                      update
                   </SuperButton>
                   <NavLink to={`/cards/${pack._id}`}>cards</NavLink>

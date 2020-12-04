@@ -28,6 +28,7 @@ export const PacksContainer = () => {
       settings: { page, pageCount, packTotalCount },
       showAddModal,
       deleteModal: { showDeleteModal, packID },
+      updateModal: { showUpdateModal },
    } = useSelector<AppStateType, InitialPacksStateType>((state) => state.packs)
    const { modelPacks } = usePacks()
    const dispatch = useDispatch()
@@ -37,13 +38,31 @@ export const PacksContainer = () => {
       if (!name) dispatch(loginThunk.meTC())
    }, [dispatch, name])
 
-   const formik = useFormik({
+   const setName = useFormik({
       initialValues: {
          packName: '',
       },
       onSubmit: (values) => {
          const { packName } = values
          dispatch(thunks.createPack(packName))
+      },
+      validate: (values) => {
+         const { packName } = values
+         const errors: FormikErrors<FormValues> = {}
+         if (packName.length < 1) {
+            errors.packName = 'Укажите название для пака'
+         }
+         return errors
+      },
+   })
+
+   const updateName = useFormik({
+      initialValues: {
+         packName: '',
+      },
+      onSubmit: (values) => {
+         const { packName } = values
+         dispatch(thunks.updatePack({ name: packName, _id: packID }))
       },
       validate: (values) => {
          const { packName } = values
@@ -87,10 +106,10 @@ export const PacksContainer = () => {
                   X
                </SuperButton>
                <h4>Укажите название карточной стопки</h4>
-               <form onSubmit={formik.handleSubmit}>
-                  <SuperInputText placeholder={'Set pack name'} {...formik.getFieldProps('packName')} />
-                  {formik.errors && <Error textError={formik.errors.packName} />}
-                  <SuperButton disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting} type='submit'>
+               <form onSubmit={setName.handleSubmit}>
+                  <SuperInputText placeholder={'Set pack name'} {...setName.getFieldProps('packName')} />
+                  {setName.errors && <Error textError={setName.errors.packName} />}
+                  <SuperButton disabled={!(setName.isValid && setName.dirty) || setName.isSubmitting} type='submit'>
                      Add Pack
                   </SuperButton>
                </form>
@@ -118,6 +137,37 @@ export const PacksContainer = () => {
                </div>
             </div>
          </Modal>
+
+         <Modal
+            enableBackground={true}
+            backgroundOnClick={() => {
+               dispatch(actions.showUpdateModal(!showUpdateModal, ''))
+            }}
+            width={400}
+            height={300}
+            // modalOnClick={() => setShow(false)}
+            show={showUpdateModal}>
+            <div className={s.modal__container}>
+               <SuperButton
+                  onClick={() => {
+                     dispatch(actions.showUpdateModal(!showUpdateModal, ''))
+                  }}
+                  className={s.close__btn}>
+                  X
+               </SuperButton>
+               <h4>Укажите новое название</h4>
+               <form onSubmit={updateName.handleSubmit}>
+                  <SuperInputText placeholder={'Set pack name'} {...updateName.getFieldProps('packName')} />
+                  {updateName.errors && <Error textError={updateName.errors.packName} />}
+                  <SuperButton
+                     disabled={!(updateName.isValid && updateName.dirty) || updateName.isSubmitting}
+                     type='submit'>
+                     Update
+                  </SuperButton>
+               </form>
+            </div>
+         </Modal>
+
          <SearchDataContainer
             fetchData={handlerDispatch}
             startRange={0}
