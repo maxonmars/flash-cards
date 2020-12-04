@@ -8,6 +8,7 @@ import { Redirect, useParams } from 'react-router-dom'
 import { PATH } from '../../../../s1-main/m1-ui/u3-routes/Routes'
 import Pagination from '../../../../s1-main/m1-ui/u0-common/Atoms/Pagination/Pagination'
 import SearchDataContainer from '../../../../s1-main/m1-ui/u0-common/Atoms/SearchData/SearchDataContainer'
+import Modal from '../../../../s1-main/m1-ui/u0-common/Atoms/Modal/Modal'
 
 export const CardsContainer = () => {
    const isLoggedIn = useSelector<AppStateType, string>((state) => state.login.isLoggedIn)

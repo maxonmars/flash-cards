@@ -18,6 +18,11 @@ type InitialPackSettingsStateType = {
 export type InitialPacksStateType = {
    packs: ApiPacksType[]
    settings: InitialPackSettingsStateType
+   showAddModal: boolean
+   deleteModal: {
+      showDeleteModal: boolean
+      packID: string
+   }
 }
 
 const initialState: InitialPacksStateType = {
@@ -32,6 +37,11 @@ const initialState: InitialPacksStateType = {
       searchName: '',
       userID: '',
    },
+   showAddModal: false,
+   deleteModal: {
+      showDeleteModal: false,
+      packID: '',
+   },
 }
 
 type ActionTypes = InferActionsType<typeof actions>
@@ -42,6 +52,8 @@ enum PACKS {
    SET_MIN_MAX_PACKS = 'SET_MIN_MAX',
    SORT_PACK = 'SORT_PRODUCT',
    GET_MY_PACK = 'GET_MY_PACK',
+   SHOW_ADD_MODAL = 'SHOW_ADD_MODAL',
+   SHOW_DELETE_MODAL = 'SHOW_DELETE_MODAL',
 }
 
 export const packsReducer: Reducer<InitialPacksStateType, ActionTypes> = (
@@ -88,6 +100,20 @@ export const packsReducer: Reducer<InitialPacksStateType, ActionTypes> = (
                userID: action.userID,
             },
          }
+      case PACKS.SHOW_ADD_MODAL:
+         return {
+            ...state,
+            showAddModal: action.modal,
+         }
+      case PACKS.SHOW_DELETE_MODAL:
+         return {
+            ...state,
+            deleteModal: {
+               ...state.deleteModal,
+               showDeleteModal: action.modal,
+               packID: action.packID,
+            },
+         }
       default:
          return state
    }
@@ -121,6 +147,17 @@ export const actions = {
          type: PACKS.GET_MY_PACK,
          userID,
       } as const),
+   showAddModal: (modal: boolean) =>
+      ({
+         type: PACKS.SHOW_ADD_MODAL,
+         modal,
+      } as const),
+   showDeleteModal: (modal: boolean, packID: string) =>
+      ({
+         type: PACKS.SHOW_DELETE_MODAL,
+         modal,
+         packID,
+      } as const),
 }
 
 type PackStoreType = () => AppStateType
@@ -152,10 +189,10 @@ export const thunks = {
          )
       } catch (e) {}
    },
-   createPack: (): AppThunk => async (dispatch) => {
+   createPack: (packName: string): AppThunk => async (dispatch) => {
       try {
          await packsAPI.createPack({
-            name: 'Galera pack',
+            name: packName,
             private: false,
             path: '',
             type: '',
@@ -164,12 +201,14 @@ export const thunks = {
             rating: 0,
             shots: 0,
          })
+         dispatch(actions.showAddModal(false))
          dispatch(thunks.fetchPacks())
       } catch (e) {}
    },
    deletePack: (pack_id: string): AppThunk => async (dispatch) => {
       try {
          await packsAPI.deletePack(pack_id)
+         dispatch(actions.showDeleteModal(false, ''))
          dispatch(thunks.fetchPacks())
       } catch (e) {}
    },
