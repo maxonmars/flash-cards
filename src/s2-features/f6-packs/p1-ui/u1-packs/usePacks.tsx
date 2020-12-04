@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
 import { NavLink } from 'react-router-dom'
 import { ApiPacksType } from '../../p3-dal/packsAPI'
-import { useDispatch } from 'react-redux'
-import { actions, thunks } from '../../p2-bll/packsReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { actions, InitialPacksStateType, thunks } from '../../p2-bll/packsReducer'
 import SortButton from '../../../../s1-main/m1-ui/u0-common/Atoms/SortButton/SortButton'
+import { AppStateType } from '../../../../s1-main/m2-bll/store'
 
 export const usePacks = () => {
    const dispatch = useDispatch()
+   const {
+      showAddModal,
+      deleteModal: { showDeleteModal },
+      updateModal: { showUpdateModal },
+   } = useSelector<AppStateType, InitialPacksStateType>((state) => state.packs)
 
    const modelPacks = {
       renderTitle: () => {
@@ -29,7 +35,12 @@ export const usePacks = () => {
                   return <th key={index}>{header}</th>
                })}
                <th>
-                  <SuperButton onClick={() => dispatch(thunks.createPack())}>ADD</SuperButton>
+                  <SuperButton
+                     onClick={() => {
+                        dispatch(actions.showAddModal(!showAddModal))
+                     }}>
+                     ADD
+                  </SuperButton>
                </th>
             </tr>
          )
@@ -42,9 +53,16 @@ export const usePacks = () => {
                <td>{pack.updated.slice(5, 16)}</td>
                <td>{pack.deckCover}</td>
                <td>
-                  <SuperButton onClick={() => dispatch(thunks.deletePack(pack._id))}>del</SuperButton>
                   <SuperButton
-                     onClick={() => dispatch(thunks.updatePack({ _id: pack._id, name: 'Updated galera pack' }))}>
+                     onClick={() => {
+                        dispatch(actions.showDeleteModal(!showDeleteModal, pack._id))
+                     }}>
+                     del
+                  </SuperButton>
+                  <SuperButton
+                     onClick={() => {
+                        dispatch(actions.showUpdateModal(!showUpdateModal, pack._id))
+                     }}>
                      update
                   </SuperButton>
                   <NavLink to={`/cards/${pack._id}`}>cards</NavLink>
@@ -56,6 +74,5 @@ export const usePacks = () => {
          )
       },
    }
-
    return { modelPacks }
 }
