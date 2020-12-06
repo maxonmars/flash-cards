@@ -125,13 +125,13 @@ export const packsReducer: Reducer<InitialPacksStateType, ActionTypes> = (
                packID: action.packID,
             },
          }
-      //закалхозил
       case PACKS.SHOW_UPDATE_MODAL:
          return {
             ...state,
             updateModal: {
                ...state.updateModal,
                showUpdateModal: action.modal,
+               packName: state.packs.find((e) => e._id === action.packID)?.name || '',
             },
             deleteModal: {
                ...state.deleteModal,

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { actions, InitialPacksStateType, thunks } from '../../p2-bll/packsReducer'
 import SortButton from '../../../../s1-main/m1-ui/u0-common/Atoms/SortButton/SortButton'
 import { AppStateType } from '../../../../s1-main/m2-bll/store'
+import { cardsActions } from '../../../f7-cards/c2-bll/cardsReducer'
 
 export const usePacks = () => {
    const dispatch = useDispatch()
@@ -14,6 +15,7 @@ export const usePacks = () => {
       deleteModal: { showDeleteModal },
       updateModal: { showUpdateModal },
    } = useSelector<AppStateType, InitialPacksStateType>((state) => state.packs)
+   const userID = useSelector<AppStateType, string>((state) => state.login.userID)
 
    const modelPacks = {
       renderTitle: () => {
@@ -53,19 +55,32 @@ export const usePacks = () => {
                <td>{pack.updated.slice(5, 16)}</td>
                <td>{pack.deckCover}</td>
                <td>
-                  <SuperButton
+                  {userID !== pack.user_id ? (
+                     ''
+                  ) : (
+                     <>
+                        <SuperButton
+                           onClick={() => {
+                              dispatch(actions.showDeleteModal(!showDeleteModal, pack._id))
+                           }}>
+                           del
+                        </SuperButton>
+                        <SuperButton
+                           onClick={() => {
+                              dispatch(actions.showUpdateModal(!showUpdateModal, pack._id))
+                           }}>
+                           update
+                        </SuperButton>
+                     </>
+                  )}
+
+                  <NavLink
+                     to={`/cards/${pack._id}`}
                      onClick={() => {
-                        dispatch(actions.showDeleteModal(!showDeleteModal, pack._id))
+                        dispatch(cardsActions.getUserID(pack.user_id || ''))
                      }}>
-                     del
-                  </SuperButton>
-                  <SuperButton
-                     onClick={() => {
-                        dispatch(actions.showUpdateModal(!showUpdateModal, pack._id))
-                     }}>
-                     update
-                  </SuperButton>
-                  <NavLink to={`/cards/${pack._id}`}>cards</NavLink>
+                     cards
+                  </NavLink>
                </td>
             </tr>
          )
