@@ -31,7 +31,6 @@ const Modal: React.FC<IModal> = ({
 
    if (!show) return null
 
-   console.log('render Modal')
    return (
       <>
          {enableBackground && (

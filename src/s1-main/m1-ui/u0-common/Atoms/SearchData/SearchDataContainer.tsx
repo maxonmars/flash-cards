@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchData from './SearchData'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,6 +31,14 @@ const SearchDataContainer: React.FC<SDCType> = ({
    const userID = useSelector<AppStateType, string>((state) => state.login.userID)
 
    const dispatch = useDispatch()
+
+   useEffect(() => {
+      return () => {
+         if (getMyData) {
+            dispatch(getMyData(''))
+         }
+      }
+   }, [])
    const formik = useFormik({
       initialValues: {
          searchData: '',
