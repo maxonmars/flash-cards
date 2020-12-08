@@ -10,7 +10,7 @@ import { cardActions, thunks } from '../../l2-bll/learnReducer'
 
 export const LearnContainer: React.FC = () => {
    const [isChecked, setChecked] = useState<boolean>(false)
-   const cards = useSelector<AppStateType, ApiCardsType[]>((store) => store.cards.cards)
+   const cards = useSelector<AppStateType, ApiCardsType[]>((store) => store.learn.cards)
    const card = useSelector<AppStateType, ApiCardsType>((store) => store.learn.card)
    const error = useSelector<AppStateType, string>((store) => store.learn.error)
    const pending = useSelector<AppStateType, boolean>((store) => store.learn.pending)
