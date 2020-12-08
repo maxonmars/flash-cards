@@ -81,19 +81,6 @@ export const usePacks = () => {
                      }}>
                      cards
                   </NavLink>
-                  <SuperButton
-                     onClick={() => {
-                        dispatch(actions.showDeleteModal(!showDeleteModal, pack._id))
-                     }}>
-                     del
-                  </SuperButton>
-                  <SuperButton
-                     onClick={() => {
-                        dispatch(actions.showUpdateModal(!showUpdateModal, pack._id))
-                     }}>
-                     update
-                  </SuperButton>
-                  <NavLink to={`/cards/${pack._id}`}>cards</NavLink>
                   <NavLink style={{ marginLeft: '20px' }} to={`/learn/${pack._id}`}>
                      learn
                   </NavLink>
