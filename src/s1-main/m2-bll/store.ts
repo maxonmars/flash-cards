@@ -12,6 +12,7 @@ import { cardsReducer } from '../../s2-features/f7-cards/c2-bll/cardsReducer'
 const reducers = combineReducers({
    login: loginReducer,
    profile: profileReducer,
+   composeWithDevTools,
    registration: registrationReducer,
    passRecovery: passwordRecoveryReducer,
    updatePass: updatePasswordReducer,
