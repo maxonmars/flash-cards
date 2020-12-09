@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
 import { NavLink } from 'react-router-dom'
 import { ApiPacksType } from '../../p3-dal/packsAPI'
@@ -80,6 +80,9 @@ export const usePacks = () => {
                         dispatch(cardsActions.getUserID(pack.user_id || ''))
                      }}>
                      cards
+                  </NavLink>
+                  <NavLink style={{ marginLeft: '20px' }} to={`/learn/${pack._id}`}>
+                     learn
                   </NavLink>
                </td>
             </tr>

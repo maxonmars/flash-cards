@@ -4,6 +4,7 @@ import { Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 import { AppStateType } from '../../../s1-main/m2-bll/store'
 import { actions } from '../../f6-packs/p2-bll/packsReducer'
+import { gradesAPI, RequestGradeType, ResponseGradeType } from '../../f9-grades/g3-dal/gradesAPI'
 
 type ActionTypes = InferActionsType<typeof cardsActions>
 
@@ -68,6 +69,8 @@ enum CARDS {
    SHOW_DELETE_MODAL = 'SHOW_DELETE_MODAL',
    SHOW_UPDATE_MODAL = 'SHOW_UPDATE_MODAL',
    GET_USER_ID = 'GET_USER_ID',
+   UPDATE_CARD_GRADE = 'UPDATE_CARD_GRADE',
+   // GET_MY_CARDS = 'GET_MY_PACK',
 }
 
 export const cardsReducer: Reducer<InitialCardsType, ActionTypes> = (
@@ -137,6 +140,18 @@ export const cardsReducer: Reducer<InitialCardsType, ActionTypes> = (
                packUserId: action.UserID,
             },
          }
+      case CARDS.UPDATE_CARD_GRADE:
+         return {
+            ...state,
+            // settings: {...state.settings},
+            cards: state.cards.map((card) => {
+               if (card._id === action.data.updatedGrade.card_id) {
+                  return { ...card, grade: action.data.updatedGrade.grade, shots: action.data.updatedGrade.shots }
+               } else {
+                  return card
+               }
+            }),
+         }
       default:
          return state
    }
@@ -152,6 +167,7 @@ export const cardsActions = {
       } as const),
    setMinMaxCards: (min: number, max: number) => ({ type: CARDS.SET_MIN_MAX_CARDS, min, max } as const),
    sortCards: (sortedPack: string) => ({ type: CARDS.SORT_CARDS, sortedPack } as const),
+   updateCardGrade: (data: ResponseGradeType) => ({ type: CARDS.UPDATE_CARD_GRADE, data } as const),
    showCardsModal: (modal: boolean) => ({ type: CARDS.SHOW_CARDS_MODAL, modal } as const),
    showDeleteModal: (modal: boolean, cardID: string) => ({ type: CARDS.SHOW_DELETE_MODAL, modal, cardID } as const),
    showUpdateModal: (modal: boolean, cardID: string) => ({ type: CARDS.SHOW_UPDATE_MODAL, modal, cardID } as const),
@@ -221,6 +237,20 @@ export const thunks = {
          await cardsAPI.updateCard(data)
          dispatch(cardsActions.showUpdateModal(false, ''))
          dispatch(thunks.fetchCards(packUId))
+      } catch (e) {}
+   },
+   updateCardGrade: (data: RequestGradeType): AppThunk => async (dispatch) => {
+      try {
+         const response = await gradesAPI.updateGrade(data)
+         dispatch(
+            cardsActions.updateCardGrade({
+               updatedGrade: {
+                  grade: response.data.updatedGrade.grade,
+                  card_id: response.data.updatedGrade.card_id,
+                  shots: response.data.updatedGrade.shots,
+               },
+            }),
+         )
       } catch (e) {}
    },
 }

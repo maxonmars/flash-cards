@@ -4,21 +4,21 @@ import { SuperInputText } from '../../../../s1-main/m1-ui/u0-common/c1-SuperInpu
 import { SuperButton } from '../../../../s1-main/m1-ui/u0-common/c2-SuperButton/SuperButton'
 import { FormValues } from './RegistrationContainer'
 import { Error } from '../../../../s1-main/m1-ui/u0-common/c7-Error/Error'
-import { ReactComponent as Loader } from './../../../../s1-main/m1-ui/u0-common/c8-Assets/Spin.svg'
 
 type PropsTypes = {
    formik: FormikProps<FormValues>
    serverErrors: string
 }
 
-export const Registration: FC<PropsTypes> = ({ formik, serverErrors }) => {
-   console.log('render')
-   return (
-      <div>
-         <form onSubmit={formik.handleSubmit}>
-            {formik.isSubmitting ? (
-               <Loader />
-            ) : (
+export const Registration: FC<PropsTypes> = React.memo(
+   ({ formik, serverErrors }) => {
+      console.log('render')
+      return (
+         <div>
+            <form onSubmit={formik.handleSubmit}>
+               {/*{formik.isSubmitting ? (*/}
+               {/*   <Loader />*/}
+               {/*) : (*/}
                <>
                   <label htmlFor='email'>Email Address</label>
                   <SuperInputText id='email' {...formik.getFieldProps('email')} />
@@ -35,8 +35,16 @@ export const Registration: FC<PropsTypes> = ({ formik, serverErrors }) => {
                   />
                   {serverErrors && <Error textError={serverErrors} />}
                </>
-            )}
-         </form>
-      </div>
-   )
-}
+               {/*)}*/}
+            </form>
+         </div>
+      )
+   },
+   (props, nextProps) => {
+      return (
+         props.formik.values === nextProps.formik.values &&
+         props.formik.errors === nextProps.formik.errors &&
+         props.formik.isSubmitting === nextProps.formik.isSubmitting
+      )
+   },
+)

@@ -56,14 +56,18 @@ export const RegistrationContainer = () => {
       },
    })
 
-   const WrappedRegistration = useMemo(() => <Registration serverErrors={serverErrors} formik={formik} />, [
-      formik.values,
-      serverErrors,
-   ])
+   // const WrappedRegistration = useMemo(() => <Registration serverErrors={serverErrors} formik={formik} />, [
+   //    formik.values,
+   //    serverErrors,
+   // ])
 
    if (isSuccessRegister) {
       return <Redirect to={'/login'} />
    }
 
-   return <>{WrappedRegistration}</>
+   return (
+      <>
+         <Registration serverErrors={serverErrors} formik={formik} />
+      </>
+   )
 }

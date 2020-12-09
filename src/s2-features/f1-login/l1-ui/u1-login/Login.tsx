@@ -15,7 +15,6 @@ type LoginPropsType = {
 }
 
 const Login: React.FC<LoginPropsType> = React.memo(({ formik, error }) => {
-   console.log('render')
    return (
       <>
          <form style={{ marginTop: '20px' }} onSubmit={formik.handleSubmit}>
