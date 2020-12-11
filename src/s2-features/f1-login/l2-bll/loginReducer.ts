@@ -3,8 +3,9 @@ import { Dispatch, Reducer } from 'redux'
 import { AppThunk } from '../../../s1-main/m3-dal/thunks'
 import { FormikValuesType } from '../l1-ui/u1-login/LoginContainer'
 import { loginAPI } from '../l3-dal/loginAPI'
+import { fdatasync } from 'fs'
 
-type InitialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 
 type ActionTypes = InferActionsType<typeof actions>
 
@@ -14,6 +15,8 @@ enum LOGIN {
    SET_ERROR = 'SET_ERROR',
    SET_PENDING = 'SET_PENDING',
    SET_USER_ID = 'SET_USER_ID',
+   SET_USER_AVATAR = 'SET_USER_AVATAR',
+   UPLOAD_USER_AVATAR = 'UPLOAD_USER_AVATAR',
 }
 
 const initialState = {
@@ -23,6 +26,8 @@ const initialState = {
    isLoggedIn: '',
    error: '',
    pending: false,
+   avatar: '',
+   uploadAvatar: false,
 }
 
 export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
@@ -56,6 +61,16 @@ export const loginReducer: Reducer<InitialStateType, ActionTypes> = (
             ...state,
             userID: action.userID,
          }
+      case LOGIN.SET_USER_AVATAR:
+         return {
+            ...state,
+            avatar: action.avatar,
+         }
+      case LOGIN.UPLOAD_USER_AVATAR:
+         return {
+            ...state,
+            uploadAvatar: action.status,
+         }
       default:
          return state
    }
@@ -67,6 +82,8 @@ export const actions = {
    setErrorAC: (error: string) => ({ type: LOGIN.SET_ERROR as const, error }),
    setPendingAC: (pending: boolean) => ({ type: LOGIN.SET_PENDING as const, pending }),
    setUserID: (userID: string) => ({ type: LOGIN.SET_USER_ID as const, userID }),
+   setUserAvatar: (avatar: string) => ({ type: LOGIN.SET_USER_AVATAR as const, avatar }),
+   uploadUserAvatar: (status: boolean) => ({ type: LOGIN.UPLOAD_USER_AVATAR as const, status }),
 }
 
 const errorHandler = (e: any, dispatch: Dispatch) => {
@@ -81,6 +98,7 @@ export const thunks = {
          dispatch(actions.isLoggedInAC('logged'))
          dispatch(actions.setUserAC(response.name, response.email))
          dispatch(actions.setUserID(response._id))
+         response.avatar && dispatch(actions.setUserAvatar(response.avatar))
       } catch (e) {
          errorHandler(e, dispatch)
       }
@@ -102,9 +120,20 @@ export const thunks = {
          dispatch(actions.setUserAC(response.name, response.email))
          dispatch(actions.setPendingAC(false))
          dispatch(actions.setUserID(response._id))
+         response.avatar && dispatch(actions.setUserAvatar(response.avatar))
       } catch (e) {
          dispatch(actions.isLoggedInAC('notLogged'))
          dispatch(actions.setPendingAC(false))
+         errorHandler(e, dispatch)
+      }
+   },
+   setPhotoTC: (avatar: any, name: string): AppThunk => async (dispatch) => {
+      try {
+         dispatch(actions.uploadUserAvatar(true))
+         const response = await loginAPI.setPhoto(avatar, name)
+         response.avatar && dispatch(actions.setUserAvatar(response.avatar))
+         dispatch(actions.uploadUserAvatar(false))
+      } catch (e) {
          errorHandler(e, dispatch)
       }
    },

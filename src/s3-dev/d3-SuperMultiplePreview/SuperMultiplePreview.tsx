@@ -16,7 +16,7 @@ export const SuperMultiplePreview = () => {
       if (e.target.files) {
          const fileArray = Array.from(e.target.files).map((file, idx) => {
             return {
-               id: String.fromCharCode(idx, 42),
+               id: `${selectedFiles.length++}`,
                img: URL.createObjectURL(file),
                name: file.name,
                size: file.size,

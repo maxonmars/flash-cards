@@ -13,4 +13,8 @@ export const loginAPI = {
       const response = await instance.post<ResType>('auth/me')
       return response.data
    },
+   setPhoto: async (avatar: string | ArrayBuffer | null, name: string) => {
+      const response = await instance.put('auth/me', { avatar, name })
+      return response.data
+   },
 }

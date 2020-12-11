@@ -1,0 +1,33 @@
+.user_photoBlock {
+   width: 200px;
+   height: 200px;
+   border: 1px solid red;
+   border-radius: 50%;
+   cursor: pointer;
+   margin: 24px 0;
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   position: relative;
+}
+
+.user_photoBlock::after {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   border-radius: 50%;
+   z-index: 2;
+   transition: all 0.2s;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.user_photoBlock:hover::after {
+  content: 'Set Photo';
+   background-color: rgba(0, 0, 0, 0.5);
+}
