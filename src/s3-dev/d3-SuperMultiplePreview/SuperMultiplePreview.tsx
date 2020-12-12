@@ -14,9 +14,10 @@ export const SuperMultiplePreview = () => {
 
    const fileHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
-         const fileArray = Array.from(e.target.files).map((file, idx) => {
+         const fileArray = Array.from(e.target.files).map((file) => {
+            const randomId = Math.floor(Math.random() * 100 + Math.random() * 100 + Math.random() * 100)
             return {
-               id: `${selectedFiles.length++}`,
+               id: `${randomId}`,
                img: URL.createObjectURL(file),
                name: file.name,
                size: file.size,
